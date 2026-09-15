@@ -1,211 +1,204 @@
 # Roadmap
 
-Operational roadmap using GitHub task-list syntax:
-- `[ ]` Not started
-- `[~]` In progress
-- `[x]` Completed
-- `[!]` Blocked
+Legend:
 
-## Phase 0 — Foundation
+- [ ] Not started
+- [~] In progress
+- [x] Completed
+- [!] Blocked
 
-### Project Setup
-- [ ] Python package structure (`src/robust_statistical_learning/`)
-- [ ] `pyproject.toml` configuration
-- [ ] `.gitignore` (Python standard)
-- [ ] `pytest.ini` configuration
-- [ ] ruff linter configuration
-- [ ] mypy type checker configuration
-- [ ] Initial commit
+## Phase 0 ? Foundation
 
-### Testing Infrastructure
-- [ ] pytest setup with basic test structure
-- [ ] First test file (mathematical invariant tests)
-- [ ] Test utilities for numerical comparisons
-- [ ] CI/CD hooks (local validation before commit)
+- [x] Repository created
+- [x] Python package structure created
+- [x] Test structure created
+- [x] `pyproject.toml` configured
+- [x] `.gitignore` configured
+- [x] pytest available
+- [x] Ruff configured
+- [x] mypy configured
+- [x] Documentation system created
+- [x] MVP boundary defined
+- [x] Architecture defined
+- [x] Foundation test implemented
+- [x] Foundation validation passed
+- [x] Foundation committed
 
-### Documentation
-- [x] README.md
-- [x] ROADMAP.md
-- [x] PROJECT-STATE.md
-- [x] HANDOFF.md
-- [x] docs/architecture.md
-- [x] docs/mathematical-foundations.md
-- [x] docs/numerical-stability.md
-- [x] docs/design-decisions.md
-- [x] docs/testing-strategy.md
-- [x] docs/experiments.md
-- [x] docs/future-scope.md
+---
 
-## Phase 1 — Least Squares & Numerical Stability
+# Phase 1 ? Least Squares & Numerical Stability
 
-### Mathematical Foundations
-- [ ] Least-squares formulation and definition
-- [ ] Vector and matrix norms (L2, Frobenius)
-- [ ] Residual definition and calculation
-- [ ] Condition number definition and measurement
-- [ ] Forward error definition
-- [ ] Backward error definition
-- [ ] Ill-conditioning concepts and examples
-- [ ] Floating-point arithmetic effects
+## 1.1 Mathematical Foundation
 
-### Numerical Core — Algorithms
-- [ ] Vector and matrix types (or numpy.ndarray with type aliases)
-- [ ] Norm calculations (L2, Frobenius, operator norms)
-- [ ] Condition number calculations
-- [ ] Residual calculations
-- [ ] Forward/backward error measurements
-- [ ] Normal Equations solver
-- [ ] QR decomposition (via numpy or custom)
-- [ ] QR-based least-squares solver
-- [ ] SVD (via numpy or custom)
-- [ ] SVD-based least-squares solver
-- [ ] Solver abstraction/interface
-- [ ] Mathematical invariant tests
+- [~] Define the least-squares optimization problem
+- [ ] Define residual and residual norm
+- [ ] Define required vector and matrix conventions
+- [ ] Define numerical tolerances
+- [ ] Add mathematical invariant tests
 
-### Experiments
-- [ ] Well-conditioned test cases
-- [ ] Ill-conditioned test cases (Hilbert matrix, vandermonde)
-- [ ] Perturbation experiments (noise on A and b)
-- [ ] Noise sensitivity analysis
-- [ ] Error analysis: residual vs forward error
-- [ ] Comparison with NumPy/SciPy implementations
-- [ ] Performance measurements (small to medium scale)
-- [ ] Practical recommendations based on evidence
+## 1.2 Numerical Core
 
-### Documentation Update
-- [ ] Phase 1 results and findings
-- [ ] Experimental evidence summary
-- [ ] Recommendations document
+- [ ] Establish core package boundaries
+- [ ] Add required numerical utility functions
+- [ ] Add input validation
+- [ ] Add norm calculations
+- [ ] Add condition-number calculation
+- [ ] Add residual calculation
 
-## Phase 2 — Regularization
+## 1.3 Normal Equations
 
-### Mathematical Foundations
-- [ ] Ridge regression formulation
-- [ ] Tikhonov regularization formulation
-- [ ] Connection to condition number improvement
-- [ ] Bias-variance tradeoff concept
-- [ ] Regularization parameter selection methods
+- [ ] Implement Normal Equations solver
+- [ ] Test exact and recoverable systems
+- [ ] Test overdetermined systems
+- [ ] Test failure conditions
+- [ ] Document conditioning implications
 
-### Numerical Core — Algorithms
-- [ ] Ridge regression solver
-- [ ] Tikhonov regularization solver
-- [ ] SVD-based regularization parameter interpretation
-- [ ] GCV (Generalized Cross-Validation) for parameter selection
-- [ ] L-curve method (optional)
-- [ ] Noise robustness tests
+## 1.4 QR-based Least Squares
 
-### Experiments
-- [ ] Regularization path visualization
-- [ ] Parameter selection accuracy
-- [ ] Noise sensitivity vs unregularized
-- [ ] Ill-conditioned problem improvement
-- [ ] Comparison with scikit-learn Ridge implementation
-- [ ] Performance measurements
-- [ ] Practical recommendations (when and why to regularize)
+- [ ] Define QR requirements
+- [ ] Implement or wrap the selected QR strategy
+- [ ] Test reconstruction and invariants
+- [ ] Implement QR-based least squares
+- [ ] Compare against reference behavior
 
-### Documentation Update
-- [ ] Phase 2 results and findings
-- [ ] Parameter selection guidance
+## 1.5 SVD-based Least Squares
 
-## Phase 3 — Principal Component Analysis
+- [ ] Define SVD requirements
+- [ ] Implement or wrap the selected SVD strategy
+- [ ] Test reconstruction and invariants
+- [ ] Implement SVD-based least squares
+- [ ] Compare against reference behavior
 
-### Mathematical Foundations
-- [ ] PCA formulation (centering, covariance, SVD)
-- [ ] Principal components and eigenvalues
-- [ ] Explained variance ratio
+## 1.6 Numerical Stability Analysis
+
+- [ ] Well-conditioned cases
+- [ ] Ill-conditioned cases
+- [ ] Hilbert-matrix experiment
+- [ ] Vandermonde-matrix experiment
+- [ ] Perturbation experiments
+- [ ] Noise experiments
+- [ ] Residual vs forward-error analysis
+- [ ] Backward-error analysis
+- [ ] Normal Equations vs QR vs SVD comparison
+
+## 1.7 Phase 1 Findings
+
+- [ ] Evidence summary
+- [ ] Failure-case summary
+- [ ] Practical solver-selection guidance
+- [ ] Phase 1 documentation update
+
+---
+
+# Phase 2 ? Regularization
+
+## 2.1 Mathematical Foundations
+
+- [ ] Ridge formulation
+- [ ] Tikhonov formulation
+- [ ] Conditioning effect
+- [ ] Bias/stability trade-off
+- [ ] Parameter-selection concepts
+
+## 2.2 Numerical Core
+
+- [ ] Ridge solver
+- [ ] Tikhonov solver
+- [ ] SVD interpretation
+- [ ] Parameter-selection implementation
+
+## 2.3 Experiments
+
+- [ ] Noise sensitivity
+- [ ] Regularization path
+- [ ] Ill-conditioned improvement
+- [ ] Reference comparison
+- [ ] Practical recommendations
+
+---
+
+# Phase 3 ? Principal Component Analysis
+
+## 3.1 Mathematical Foundations
+
+- [ ] Centering
+- [ ] PCA formulation
+- [ ] SVD interpretation
+- [ ] Explained variance
 - [ ] Reconstruction error
-- [ ] Dimensionality reduction concept
-- [ ] Numerical sensitivity in PCA
 
-### Numerical Core — Algorithms
+## 3.2 Numerical Core
+
 - [ ] Centering operation
-- [ ] Covariance matrix calculation (careful numerics)
-- [ ] SVD-based PCA implementation
-- [ ] Principal component extraction
-- [ ] Explained variance calculation
-- [ ] Reconstruction from components
-- [ ] Noise effect on principal components
+- [ ] SVD-based PCA
+- [ ] Component extraction
+- [ ] Explained variance
+- [ ] Reconstruction
 
-### Experiments
-- [ ] Synthetic data with known structure
-- [ ] Variance explanation experiments
-- [ ] Reconstruction error vs components kept
-- [ ] Noise sensitivity on small datasets
-- [ ] Centering necessity verification
-- [ ] Comparison with scikit-learn PCA
-- [ ] Performance measurements
-- [ ] Real small dataset (synthetic or standard)
+## 3.3 Experiments
 
-### Documentation Update
-- [ ] Phase 3 results and findings
+- [ ] Synthetic structured data
+- [ ] Reconstruction experiments
+- [ ] Noise sensitivity
+- [ ] Reference comparison
+- [ ] Real small dataset
 
-## Phase 4 — Real Data & Validation
+---
 
-### Dataset Selection
-- [ ] Choose 2-3 small, well-understood datasets
-- [ ] Verify reproducibility (provide seeds, preprocessing steps)
-- [ ] Document dimensions, features, target variable
-- [ ] Identify expected challenges (conditioning, noise, scale)
+# Phase 4 ? Real Data & Validation
 
-### Experiments
-- [ ] Least Squares on real data
-- [ ] Regularization parameter selection on real data
-- [ ] Cross-validation setup and evaluation
-- [ ] Prediction accuracy measurements
-- [ ] Stability under small perturbations
-- [ ] Numerical precision assessment
-- [ ] Failure case identification and analysis
-- [ ] Runtime measurements
-- [ ] Comparison with scikit-learn implementations
+- [ ] Select a small regression dataset
+- [ ] Select a small PCA dataset
+- [ ] Define reproducible preprocessing
+- [ ] Run regression experiments
+- [ ] Run regularization experiments
+- [ ] Run PCA experiments
+- [ ] Compare accuracy
+- [ ] Compare numerical stability
+- [ ] Compare runtime
+- [ ] Analyze failure cases
+- [ ] Publish practical recommendations
 
-### Validation
-- [ ] Reproducible pipeline (fixed seeds, documented splits)
-- [ ] Performance metrics (MSE, MAE, R²)
-- [ ] Stability scores
-- [ ] Robustness summary
+---
 
-### Documentation Update
-- [ ] Findings and recommendations
-- [ ] Final summary of Phase 1-4
-- [ ] Practical guidance for practitioners
+# Post-MVP ? Future Scope
 
-## Post-MVP Backlog
+## Numerical Extensions
 
-**Note**: These are possible future directions. They are NOT current implementation commitments.
-
-### Numerical Extensions
-- [ ] Additional matrix decompositions (LU, Cholesky)
-- [ ] Iterative linear solvers (GMRES, CG)
+- [ ] Additional matrix decompositions
+- [ ] Iterative linear solvers
 - [ ] Eigenvalue methods
 - [ ] Sparse numerical methods
 
-### Optimization
-- [ ] Gradient Descent (basic, with line search)
-- [ ] Newton method
-- [ ] Quasi-Newton methods (BFGS)
+## Optimization
+
+- [ ] Gradient Descent
+- [ ] Newton
+- [ ] Quasi-Newton
 - [ ] Coordinate Descent
-- [ ] Convex Optimization framework
+- [ ] Convex Optimization
 - [ ] Constrained Optimization
 
-### Deep Learning
-- [ ] Neural network layers (linear, activation)
-- [ ] Backpropagation implementation
-- [ ] Automatic differentiation basics
-- [ ] Optimization for neural networks
-- [ ] Regularization techniques
-- [ ] Small neural network on standard benchmark
+## Deep Learning
 
-### Platform
-- [ ] REST API (FastAPI or similar)
-- [ ] Docker containerization (optional)
-- [ ] API documentation
-- [ ] Web dashboard for experiments
-- [ ] Distributed computation exploration
+- [ ] Neural-network numerical foundations
+- [ ] Backpropagation
+- [ ] Automatic differentiation foundations
+- [ ] Neural-network optimization
+- [ ] GPU execution
 
-### Compatibility / Reimplementation
-- [ ] Selected NumPy functions (not all)
-- [ ] Selected SciPy functions (not all)
-- [ ] API compatibility for educational purposes
-- [ ] Performance comparison with NumPy/SciPy
+## Platform
 
-All post-MVP work is exploratory and extensible.
+- [ ] REST API
+- [ ] FastAPI and/or Django
+- [ ] Docker
+- [ ] Distributed computation
+- [ ] Microservices
+
+## Compatibility / Reimplementation
+
+- [ ] Selected NumPy-compatible functionality
+- [ ] Selected SciPy-compatible functionality
+- [ ] Reference performance comparison
+
+Post-MVP items are not active commitments until explicitly promoted.
