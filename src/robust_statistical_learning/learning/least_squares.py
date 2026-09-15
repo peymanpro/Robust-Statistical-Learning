@@ -1,4 +1,4 @@
-﻿"""Least-squares mathematical model."""
+"""Least-squares mathematical model."""
 
 from __future__ import annotations
 

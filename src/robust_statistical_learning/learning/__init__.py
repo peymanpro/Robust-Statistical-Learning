@@ -1,1 +1,1 @@
-﻿"""Learning-level mathematical models."""
+"""Learning-level mathematical models."""
