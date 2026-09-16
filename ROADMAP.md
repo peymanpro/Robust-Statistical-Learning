@@ -47,11 +47,11 @@ Legend:
 
 ## 1.3 Normal Equations
 
-- [ ] Implement Normal Equations solver
-- [ ] Test exact and recoverable systems
-- [ ] Test overdetermined systems
-- [ ] Test failure conditions
-- [ ] Document conditioning implications
+- [x] Implement Normal Equations solver
+- [x] Test exact and recoverable systems
+- [x] Test overdetermined systems
+- [x] Test failure conditions
+- [x] Document conditioning implications
 
 ## 1.4 QR-based Least Squares
 

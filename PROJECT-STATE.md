@@ -6,28 +6,28 @@
 
 ## Current Phase
 
-**Phase 1 — Least Squares & Numerical Stability**
+**Phase 1 â€” Least Squares & Numerical Stability**
 
 ## Current Task
 
-Phase 1.3 — Normal Equations.
+Phase 1.3 â€” Normal Equations.
 
 ## Verified Commit
 
-`32adadb` — `feat: validate least squares dimensions`
+`32adadb` â€” `feat: validate least squares dimensions`
 
 ## Completed
 
-Phase 0 — Foundation.
+Phase 0 â€” Foundation.
 
-Phase 1.1 — Least-squares mathematical foundation:
+Phase 1.1 â€” Least-squares mathematical foundation:
 - Least-squares optimization formulation
 - Residual and residual norm
 - Matrix/vector conventions
 - Numerical tolerances
 - Mathematical invariant tests
 
-Phase 1.2 — Numerical Core:
+Phase 1.2 â€” Numerical Core:
 - Core package boundaries
 - Numerical validation
 - L2 and Frobenius norms
