@@ -38,12 +38,12 @@ Legend:
 
 ## 1.2 Numerical Core
 
-- [ ] Establish core package boundaries
-- [ ] Add required numerical utility functions
-- [ ] Add input validation
-- [ ] Add norm calculations
-- [ ] Add condition-number calculation
-- [ ] Add residual calculation
+- [x] Establish core package boundaries
+- [x] Add required numerical utility functions
+- [x] Add input validation
+- [x] Add norm calculations
+- [x] Add condition-number calculation
+- [x] Add residual calculation
 
 ## 1.3 Normal Equations
 
