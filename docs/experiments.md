@@ -403,3 +403,56 @@ Good experiments:
 - Lead to actionable recommendations
 - Document all relevant parameters
 - Compare to established references where appropriate
+
+---
+
+# Experiment: Normal Equations and Conditioning
+
+## Hypothesis
+
+Forming the normal equations
+
+\[
+A^T A x = A^T b
+\]
+
+amplifies conditioning approximately as
+
+\[
+\kappa(A^T A) \approx \kappa(A)^2
+\]
+
+As conditioning worsens, forward error may become large even when the residual remains small.
+
+## Setup
+
+- Dimensions: \(m=40,\ n=5\)
+- Seed: `42`
+- True solution: \(x=[1,2,3,4,5]^T\)
+- \(b=Ax\)
+- Target condition numbers: \(10^2,10^6,10^{10},10^{12},10^{14}\)
+- Solver: Normal Equations
+- Reference solution: constructed `x_true`
+## Measurements
+
+| Target \(\kappa(A)\) | Actual \(\kappa(A)\) | \(\kappa(A^T A)\) | Forward Error | Residual |
+|---:|---:|---:|---:|---:|
+| \(10^2\) | \(1.000\times10^2\) | \(1.000\times10^4\) | \(3.519\times10^{-13}\) | \(2.653\times10^{-14}\) |
+| \(10^6\) | \(1.000\times10^6\) | \(1.000\times10^{12}\) | \(8.723\times10^{-6}\) | \(6.470\times10^{-11}\) |
+| \(10^{10}\) | \(1.000\times10^{10}\) | \(6.589\times10^{15}\) | \(2.354\times10^{-2}\) | \(4.126\times10^{-9}\) |
+| \(10^{12}\) | \(1.000\times10^{12}\) | \(1.015\times10^{17}\) | \(7.114\times10^{-1}\) | \(5.276\times10^{-9}\) |
+| \(10^{14}\) | \(1.001\times10^{14}\) | \(1.936\times10^{17}\) | \(2.300\times10^{1}\) | \(2.539\times10^{-8}\) |
+
+## Interpretation
+
+The experiment demonstrates that a small residual does not guarantee an accurate parameter vector. For the approximately 1e14 condition-number case, the relative forward error is about 23 while the residual remains about 2.5e-8.
+
+For moderate condition numbers, kappa(A^T A) follows the expected squaring relationship. At very large condition numbers, finite-precision effects limit the computed value.
+
+## Recommendation
+
+Normal Equations should remain in this project as a pedagogical and comparative solver. This experiment does not establish a universal condition-number cutoff for all problems.
+
+## Reproducibility
+
+Script: experiments/normal_equations_conditioning.py
