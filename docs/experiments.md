@@ -456,3 +456,25 @@ Normal Equations should remain in this project as a pedagogical and comparative 
 ## Reproducibility
 
 Script: experiments/normal_equations_conditioning.py
+
+---
+
+# Experiment: Normal Equations vs QR under Ill-Conditioning
+
+This experiment compares forward error and residuals for Normal Equations and QR on the same controlled matrix family.
+
+| Target kappa(A) | Normal Error | QR Error | Normal Residual | QR Residual |
+|---:|---:|---:|---:|---:|
+| 1e2 | 3.519e-13 | 2.468e-15 | 2.653e-14 | 1.020e-15 |
+| 1e6 | 8.723e-06 | 1.596e-11 | 6.470e-11 | 5.718e-16 |
+| 1e10 | 2.354e-02 | 3.174e-09 | 4.126e-09 | 7.453e-16 |
+| 1e12 | 7.114e-01 | 1.727e-06 | 5.276e-09 | 6.761e-16 |
+| 1e14 | 2.300e+01 | 4.507e-03 | 2.539e-08 | 6.780e-16 |
+
+## Interpretation
+
+On this controlled matrix family, QR maintains substantially smaller forward error than Normal Equations as conditioning worsens. At kappa(A) approximately 1e14, Normal Equations has forward error approximately 23, while QR remains approximately 4.5e-3.
+
+Both methods can still produce small residuals. Therefore, a small residual alone is not sufficient evidence of an accurate parameter vector.
+
+This experiment does not establish a universal superiority threshold; it is evidence for this matrix family, size, seed, scaling, and floating-point environment.
