@@ -6,32 +6,50 @@
 
 ## Current Phase
 
-**Phase 1 ? Least Squares & Numerical Stability**
+**Phase 1 — Least Squares & Numerical Stability**
 
 ## Current Task
 
-Phase 1.1 ? Least-squares mathematical foundation.
+Phase 1.2 — Numerical Core.
 
 ## Verified Commit
 
-`3e6f270` ? `chore: establish project foundation`
+`073b052` — `feat: define numerical array conventions`
 
-## Foundation Status
+## Completed
 
-Phase 0 is complete. Repository structure, tooling, tests, and operational documentation are established.
+Phase 0 — Foundation.
+
+Phase 1.1 — Least-squares mathematical foundation:
+- Least-squares optimization formulation
+- Residual and residual norm
+- Matrix/vector conventions
+- Numerical tolerances
+- Mathematical invariant tests
+
+## Current Implementation
+
+- Least-squares residual/objective model
+- Shared numerical array type conventions
+- Numerical comparison tolerances
+- Tests covering core mathematical identities
+
+No least-squares solver has been implemented yet.
 
 ## Next
 
-1. Establish the numerical-core package boundaries.
-2. Define the least-squares formulation and residual.
-3. Add mathematical tests.
-4. Implement the minimum required numerical functionality.
+1. Establish Numerical Core boundaries.
+2. Add input validation.
+3. Add norm utilities.
+4. Add condition-number calculation.
+5. Add residual utilities where appropriate.
+6. Then implement Normal Equations, QR, and SVD solvers.
 
 ## Validation
 
 | Check | Status |
 |---|---|
-| pytest | PASS ? 1 test |
+| pytest | PASS |
 | ruff | PASS |
 | mypy | PASS |
 | git diff --check | PASS |

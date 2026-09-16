@@ -30,11 +30,11 @@ Legend:
 
 ## 1.1 Mathematical Foundation
 
-- [~] Define the least-squares optimization problem
-- [ ] Define residual and residual norm
-- [ ] Define required vector and matrix conventions
-- [ ] Define numerical tolerances
-- [ ] Add mathematical invariant tests
+- [x] Define the least-squares optimization problem
+- [x] Define residual and residual norm
+- [x] Define required vector and matrix conventions
+- [x] Define numerical tolerances
+- [x] Add mathematical invariant tests
 
 ## 1.2 Numerical Core
 
