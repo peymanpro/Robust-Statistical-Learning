@@ -26,13 +26,23 @@ def validate_least_squares_dimensions(
     solution: Vector,
     observations: Vector,
 ) -> None:
-    """Validate dimensions for Ax - b."""
+    """Validate dimensions for the project's least-squares convention."""
     validate_matrix(matrix)
     validate_vector(solution)
     validate_vector(observations)
+
+    rows, columns = matrix.shape
+
+    if rows == 0 or columns == 0:
+        raise ValueError("least-squares matrix must be non-empty")
 
     if matrix.shape[1] != solution.shape[0]:
         raise ValueError("matrix columns must match solution dimension")
 
     if matrix.shape[0] != observations.shape[0]:
         raise ValueError("matrix rows must match observation dimension")
+
+    if rows < columns:
+        raise ValueError(
+            "least-squares matrix must have at least as many rows as columns"
+        )

@@ -133,3 +133,19 @@ def test_core_residual_rejects_dimension_mismatch() -> None:
 
     with pytest.raises(ValueError, match="solution dimension"):
         residual(matrix, solution, observations)
+def test_validate_least_squares_dimensions_rejects_empty_matrix() -> None:
+    matrix = np.empty((0, 2))
+    solution = np.array([1.0, 2.0])
+    observations = np.empty(0)
+
+    with pytest.raises(ValueError, match="non-empty"):
+        validate_least_squares_dimensions(matrix, solution, observations)
+
+
+def test_validate_least_squares_dimensions_rejects_underdetermined_system() -> None:
+    matrix = np.eye(2, 3)
+    solution = np.array([1.0, 2.0, 3.0])
+    observations = np.array([1.0, 2.0])
+
+    with pytest.raises(ValueError, match="at least as many rows"):
+        validate_least_squares_dimensions(matrix, solution, observations)
