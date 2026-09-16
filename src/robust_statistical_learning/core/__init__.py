@@ -1,2 +1,1 @@
-"Numerical core primitives and conventions.
-"
+"""Numerical core primitives and conventions."""
