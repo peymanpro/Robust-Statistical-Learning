@@ -21,14 +21,12 @@ def validate_vector(vector: Vector) -> None:
         raise ValueError("vector must contain only finite values")
 
 
-def validate_least_squares_dimensions(
+def validate_least_squares_system(
     matrix: Matrix,
-    solution: Vector,
     observations: Vector,
 ) -> None:
-    """Validate dimensions for the project's least-squares convention."""
+    """Validate the A,b dimensions used by least-squares solvers."""
     validate_matrix(matrix)
-    validate_vector(solution)
     validate_vector(observations)
 
     rows, columns = matrix.shape
@@ -36,13 +34,23 @@ def validate_least_squares_dimensions(
     if rows == 0 or columns == 0:
         raise ValueError("least-squares matrix must be non-empty")
 
-    if matrix.shape[1] != solution.shape[0]:
-        raise ValueError("matrix columns must match solution dimension")
-
-    if matrix.shape[0] != observations.shape[0]:
+    if rows != observations.shape[0]:
         raise ValueError("matrix rows must match observation dimension")
 
     if rows < columns:
         raise ValueError(
             "least-squares matrix must have at least as many rows as columns"
         )
+
+
+def validate_least_squares_dimensions(
+    matrix: Matrix,
+    solution: Vector,
+    observations: Vector,
+) -> None:
+    """Validate dimensions for Ax - b."""
+    validate_least_squares_system(matrix, observations)
+    validate_vector(solution)
+
+    if matrix.shape[1] != solution.shape[0]:
+        raise ValueError("matrix columns must match solution dimension")
