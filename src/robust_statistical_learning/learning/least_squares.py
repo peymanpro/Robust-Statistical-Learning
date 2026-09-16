@@ -5,6 +5,8 @@ from __future__ import annotations
 import numpy as np
 from numpy.typing import NDArray
 
+from robust_statistical_learning.core import residuals as core_residuals
+
 FloatArray = NDArray[np.float64]
 
 
@@ -14,7 +16,7 @@ def residual(
     b: FloatArray,
 ) -> FloatArray:
     """Return the least-squares residual r = Ax - b."""
-    return np.asarray(a @ x - b, dtype=np.float64)
+    return core_residuals.residual(a, x, b)
 
 
 def residual_norm(
@@ -23,7 +25,7 @@ def residual_norm(
     b: FloatArray,
 ) -> float:
     """Return the Euclidean norm ||Ax - b||_2."""
-    return float(np.linalg.norm(residual(a, x, b), ord=2))
+    return core_residuals.residual_norm(a, x, b)
 
 
 def objective(
