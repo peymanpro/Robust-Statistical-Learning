@@ -74,7 +74,7 @@ Legend:
 
 - [x] Well-conditioned cases
 - [x] Ill-conditioned cases
-- [ ] Hilbert-matrix experiment
+- [x] Hilbert-matrix experiment
 - [ ] Vandermonde-matrix experiment
 - [ ] Perturbation experiments
 - [ ] Noise experiments

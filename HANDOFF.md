@@ -14,7 +14,7 @@ https://github.com/peymanpro/Robust-Statistical-Learning
 
 ## Verified Commit
 
-`371e1e7` — `experiment: add ill-conditioned solver comparison`
+`8e9a219` — `experiment: add Hilbert matrix solver comparison`
 
 ## Project Goal
 
@@ -39,12 +39,11 @@ NumPy, SciPy, or scikit-learn.
 
 Phase 1.6 — Numerical Stability Analysis.
 
-Well-conditioned and ill-conditioned solver comparison experiments
+Well-conditioned, ill-conditioned, and Hilbert-matrix experiments
 are complete and recorded. The remaining Phase 1.6 items are the
-Hilbert-matrix experiment, the Vandermonde-matrix experiment,
-perturbation and noise experiments, residual vs forward-error
-analysis, backward-error analysis, and a consolidated cross-solver
-comparison.
+Vandermonde-matrix experiment, perturbation and noise experiments,
+residual vs forward-error analysis, backward-error analysis, and a
+consolidated cross-solver comparison.
 
 ## Completed
 
@@ -74,7 +73,7 @@ SVD has explicit tests for:
 
 The latest verified commit is:
 
-`371e1e7` — `experiment: add ill-conditioned solver comparison`
+`8e9a219` — `experiment: add Hilbert matrix solver comparison`
 
 The branch contains local commits that have not been pushed to
 `origin/main` (currently at `1e173aa`). Run `git status --short --branch`
@@ -83,10 +82,11 @@ for the current count. No push is performed without explicit instruction.
 ## Exact Next Action
 
 Continue Phase 1.6 — Numerical Stability Analysis. The next experiment
-is a Hilbert-matrix study, followed by a Vandermonde-matrix study, to
-test the same solvers on matrices whose structure produces strong
-ill-conditioning without relying on the controlled-singular-value
-family used so far.
+is a Vandermonde-matrix study. Vandermonde matrices arise from
+polynomial fitting and produce conditioning that grows with the
+number of points and with the evaluation nodes; the experiment will
+test whether the solver-ordering observed on the Hilbert and
+controlled-singular-value families carries over.
 
 Each experiment follows the structure:
 

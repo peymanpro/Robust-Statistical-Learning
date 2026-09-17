@@ -16,7 +16,7 @@ Phase 1.5 (SVD-based Least Squares) is complete and validated.
 
 ## Verified Commit
 
-`371e1e7` — `experiment: add ill-conditioned solver comparison`
+`8e9a219` — `experiment: add Hilbert matrix solver comparison`
 
 ## Completed
 
@@ -80,6 +80,11 @@ Phase 1.6 - Numerical Stability Analysis (partial):
   numerical rank drops and both NE and QR raise ValueError, while
   SVD returns the minimum-norm solution; residual remains small
   across all solvers even when forward error exceeds 1
+- Hilbert matrix experiment added
+- Findings: NE breaks at n = 6 (kappa = 1.5e7); QR and SVD track
+  eps * kappa until n = 10; at n = 12 numerical rank drops and
+  NE and QR raise ValueError while SVD returns minimum-norm; LU
+  reference at n = 12 is itself unusable (forward error 3.2e-1)
 
 ## Current Implementation
 
