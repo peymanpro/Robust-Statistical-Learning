@@ -845,3 +845,118 @@ Six patterns emerge on this family:
 Script: experiments/hilbert_comparison.py
 
 Environment: Python 3.12.x, NumPy float64, no random seed required.
+
+
+---
+
+# Experiment: Vandermonde Matrix Solver Comparison
+
+## Hypothesis
+
+A Vandermonde matrix V[i, j] = x_i^(j-1) with uniformly spaced nodes in
+(0, 1) produces conditioning that grows with the number of columns n but
+more slowly than the Hilbert family at comparable sizes. We expect the
+same solver ordering observed on the previous families: Normal Equations
+loses forward accuracy first, QR and SVD remain equivalent to each other
+until numerical rank deficiency occurs, and residual stays small
+regardless of forward error.
+
+## Setup
+
+- Rows: m = 40
+- Columns: n = 4, 6, 8, 10, 12, 15
+- Nodes: x_i = i / (m + 1) for i = 1..m, uniform in (0, 1)
+- True solution: x_true = ones(n)
+- b = V @ x_true
+- Solvers: solve_normal_equations, solve_qr, solve_svd
+- Cross-check reference: numpy.linalg.lstsq (rcond=None)
+- Numerical rank: sigma_max * max(m, n) * eps threshold
+- dtype: float64
+
+## Measurements
+
+Main comparison:
+
+| n | kappa | rank | NE fwd | QR fwd | SVD fwd | NE res | QR res | SVD res |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 1.343e02 | 4 | 1.242e-13 | 3.951e-15 | 4.818e-15 | 2.004e-14 | 1.601e-15 | 1.632e-15 |
+| 6 | 4.433e03 | 6 | 1.866e-10 | 9.089e-14 | 7.430e-14 | 8.254e-13 | 2.719e-15 | 8.685e-15 |
+| 8 | 1.528e05 | 8 | 5.317e-07 | 1.082e-11 | 1.300e-11 | 8.021e-11 | 4.094e-15 | 1.844e-14 |
+| 10 | 5.456e06 | 10 | 7.672e-05 | 2.906e-10 | 2.915e-10 | 3.706e-10 | 3.546e-15 | 1.109e-14 |
+| 12 | 2.018e08 | 12 | 1.459e-01 | 3.525e-09 | 1.445e-09 | 2.096e-08 | 5.908e-15 | 3.022e-14 |
+| 15 | 4.889e10 | 15 | LinAlgError | 2.995e-07 | 1.941e-07 | LinAlgError | 6.339e-15 | 1.350e-14 |
+
+Cross-check vs numpy.linalg.lstsq:
+
+| n | ref fwd | NE vs ref | QR vs ref | SVD vs ref |
+|---:|---:|---:|---:|---:|
+| 4 | 3.360e-15 | 2.418e-13 | 1.450e-14 | 1.624e-14 |
+| 6 | 2.621e-13 | 4.565e-10 | 8.555e-13 | 8.124e-13 |
+| 8 | 4.367e-12 | 1.504e-06 | 1.833e-11 | 2.452e-11 |
+| 10 | 5.890e-11 | 2.426e-04 | 1.105e-09 | 1.108e-09 |
+| 12 | 1.701e-09 | 5.055e-01 | 1.810e-08 | 1.089e-08 |
+| 15 | 9.144e-07 | n/a | 4.628e-06 | 2.959e-06 |
+
+## Interpretation
+
+Six patterns emerge on this family:
+
+1. The condition number grows much more slowly with n than on the
+   Hilbert family. At n = 15 the Vandermonde matrix reaches
+   kappa = 4.9e10, whereas the Hilbert matrix reached kappa = inf at
+   n = 12. This reflects the geometric growth of Vandermonde
+   conditioning with uniform nodes versus the exponential growth of
+   Hilbert conditioning.
+
+2. Normal Equations maintains usable forward accuracy through n = 10
+   (forward error 7.7e-05 at kappa = 5.5e6) and begins to fail at n = 12
+   (forward error 1.5e-01 at kappa = 2.0e8). At n = 15 it raises
+   LinAlgError, consistent with kappa(A)^2 exceeding 1/eps at that
+   size.
+
+3. QR and SVD remain numerically equivalent to each other across the
+   entire tested range. Their forward errors track the eps * kappa
+   scale: at n = 12 (kappa = 2.0e8) both are around 1e-9, and at n = 15
+   (kappa = 4.9e10) both are around 2e-7.
+
+4. The numerical rank stays full (rank = n) for every tested size. No
+   rank deficiency is observed on this Vandermonde family at these
+   dimensions, unlike the Hilbert family at n = 12. The SVD solver
+   therefore does not enter its rank-truncated regime on this family.
+
+5. The cross-check against numpy.linalg.lstsq confirms the picture. The
+   reference itself has forward error 9.1e-07 at n = 15. QR differs
+   from that reference by 4.6e-06 and SVD by 3.0e-06, consistent with
+   the eps * kappa scale of the family. Normal Equations diverges from
+   the reference by 5.1e-01 at n = 12 and rejects the problem at n = 15.
+
+6. The residual remains small for every solver at every size, including
+   n = 12 where Normal Equations has forward error above 1. A small
+   residual continues to be insufficient evidence of an accurate
+   parameter vector.
+
+## Recommendation
+
+- On Vandermonde families with uniform nodes, Normal Equations is
+  usable up to kappa approximately 1e6 and should not be relied upon
+  beyond that. This is consistent with the well-conditioned and
+  ill-conditioned findings.
+- QR and SVD remain reliable across the entire tested range on this
+  family. They agree with each other to within one order of magnitude
+  and track the eps * kappa scale. On this family, the choice between
+  them is a matter of requirements (QR rejects rank-deficient input
+  explicitly; SVD returns a minimum-norm solution), not accuracy.
+- The condition number of the Vandermonde family with uniform nodes
+  grows slowly enough that rank deficiency is not observed at the
+  tested sizes. On other node distributions (clustered, Chebyshev,
+  endpoints-heavy), the condition number can be much larger; those
+  distributions are not tested here.
+- These numbers do not establish universal cutoffs. They are evidence
+  for the tested node distribution, dimensions, and float64
+  environment.
+
+## Reproducibility
+
+Script: experiments/vandermonde_comparison.py
+
+Environment: Python 3.12.x, NumPy float64, no random seed required.
