@@ -90,6 +90,14 @@ Evidence -> Interpretation -> Limitation -> Recommendation.
 - Use SOLID and design patterns only when they solve real problems.
 - Mathematical claims require tests and reproducible evidence.
 
+## Environment Notes
+
+- Windows PowerShell 5.1's `Set-Content -Encoding UTF8` writes a UTF-8 BOM.
+  When writing files in this repository, prefer Python's
+  `Path.write_text(..., encoding="utf-8")` or
+  `[System.IO.File]::WriteAllText($path, $text, [System.Text.UTF8Encoding]::new($false))`.
+  See commit `ba8c07c` for the BOM removal fix that motivated this rule.
+
 ## Handoff Rule
 
 Before ending a substantial session:
