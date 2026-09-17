@@ -6,6 +6,19 @@ Architecture grows outward from a pristine mathematical core. The core contains 
 
 Each layer depends only on layers below. Lower layers never depend on upper layers.
 
+> **Status note (operational).** The layered structure below describes the
+> target architecture. The current repository implements a subset of it. In
+> particular, least-squares solvers currently live under
+> `src/robust_statistical_learning/learning/` (`normal_equations.py`,
+> `qr.py`, `svd.py`) rather than under the Numerical Core as the diagram
+> suggests, and the module layout under `core/` is consolidated
+> (`metrics.py`, `residuals.py`, `validation.py`, `types.py`,
+> `tolerances.py`) rather than decomposed into `norms.py`, `condition.py`,
+> `decomposition.py`, `solvers.py`, `errors.py`, and `invariants.py`. The
+> current implementation is the source of truth; this document is updated
+> as the architecture evolves.
+
+
 ## Conceptual Architecture
 
 ```text
