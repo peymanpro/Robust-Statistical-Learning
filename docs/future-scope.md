@@ -428,5 +428,5 @@ The following are explicitly **out of scope**, even post-MVP:
 - Hardware-specific optimization (GPU CUDA without numerical insight)
 - Enterprise features (logging, monitoring, alerts) until there's a production need
 - Arbitrary feature requests; all new work must serve the core mission
-- Support for old Python versions (target Python 3.11+)
+- Support for old Python versions (target Python 3.12+)
 - Compatibility with Java, C++, or other languages (stay focused on Python)
