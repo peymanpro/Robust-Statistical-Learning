@@ -14,7 +14,7 @@ https://github.com/peymanpro/Robust-Statistical-Learning
 
 ## Verified Commit
 
-`8e1939b` — `experiment: add Vandermonde matrix solver comparison`
+`994aeaf` — `experiment: add perturbation sensitivity study`
 
 ## Project Goal
 
@@ -39,11 +39,11 @@ NumPy, SciPy, or scikit-learn.
 
 Phase 1.6 — Numerical Stability Analysis.
 
-Well-conditioned, ill-conditioned, Hilbert, and Vandermonde
-experiments are complete and recorded. The remaining Phase 1.6
-items are perturbation and noise experiments, residual vs
-forward-error analysis, backward-error analysis, and a consolidated
-cross-solver comparison.
+Well-conditioned, ill-conditioned, Hilbert, Vandermonde, and
+perturbation experiments are complete and recorded. The remaining
+Phase 1.6 items are the noise experiment, residual vs forward-error
+analysis, backward-error analysis, and a consolidated cross-solver
+comparison.
 
 ## Completed
 
@@ -73,7 +73,7 @@ SVD has explicit tests for:
 
 The latest verified commit is:
 
-`8e1939b` — `experiment: add Vandermonde matrix solver comparison`
+`994aeaf` — `experiment: add perturbation sensitivity study`
 
 The branch contains local commits that have not been pushed to
 `origin/main` (currently at `1e173aa`). Run `git status --short --branch`
@@ -82,11 +82,11 @@ for the current count. No push is performed without explicit instruction.
 ## Exact Next Action
 
 Continue Phase 1.6 — Numerical Stability Analysis. The next experiment
-is a perturbation study: fix a well-conditioned problem and perturb
-either the design matrix or the observations by controlled amounts,
-then measure how each solver's forward error responds. The goal is
-to separate conditioning-induced error from perturbation-induced
-error and confirm the backward-stability claim empirically.
+is a noise study: generate observations with additive Gaussian noise
+at controlled signal-to-noise ratios, and measure how each solver's
+forward error responds as the noise level grows. The goal is to
+separate conditioning-induced error from noise-induced error, which
+is the practical regime where real data are collected.
 
 Each experiment follows the structure:
 

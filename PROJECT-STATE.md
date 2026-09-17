@@ -16,7 +16,7 @@ Phase 1.5 (SVD-based Least Squares) is complete and validated.
 
 ## Verified Commit
 
-`8e1939b` — `experiment: add Vandermonde matrix solver comparison`
+`994aeaf` — `experiment: add perturbation sensitivity study`
 
 ## Completed
 
@@ -91,6 +91,12 @@ Phase 1.6 - Numerical Stability Analysis (partial):
   equivalent and track eps * kappa across the full range; no rank
   deficiency observed; numerical rank grows more slowly than on
   the Hilbert family
+- Perturbation sensitivity experiment added
+- Findings: for kappa = 1e4, all three solvers follow the
+  classical perturbation bound at magnitudes >= 1e-10; below that,
+  rounding dominates; QR/SVD floors match eps * kappa while NE
+  floors match eps * kappa^2; perturbing A produces larger forward
+  error than perturbing b of the same relative magnitude
 
 ## Current Implementation
 
