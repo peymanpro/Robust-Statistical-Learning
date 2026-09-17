@@ -75,13 +75,18 @@ The latest verified commit is:
 
 `8f5ef1a` — `experiment: add well-conditioned solver comparison`
 
-The branch is ahead of `origin/main` (which is at `1e173aa`) by 7 commits.
-No push is performed without explicit instruction.
+The branch contains local commits that have not been pushed to
+`origin/main` (currently at `1e173aa`). Run `git status --short --branch`
+for the current count. No push is performed without explicit instruction.
 
 ## Exact Next Action
 
-Begin Phase 1.6 — Numerical Stability Analysis. Start with well-conditioned
-and ill-conditioned controlled cases, following the structure:
+Continue Phase 1.6 — Numerical Stability Analysis. The well-conditioned
+solver comparison is complete. The next experiment is ill-conditioned
+cases on the same controlled matrix family, extending the target
+condition numbers toward 1e10, 1e12, 1e14, and 1e16.
+
+Each experiment follows the structure:
 
 Mathematical Question -> Hypothesis -> Controlled Setup -> Measurement ->
 Evidence -> Interpretation -> Limitation -> Recommendation.
