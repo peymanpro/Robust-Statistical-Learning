@@ -14,7 +14,7 @@ https://github.com/peymanpro/Robust-Statistical-Learning
 
 ## Verified Commit
 
-`8f5ef1a` — `experiment: add well-conditioned solver comparison`
+`371e1e7` — `experiment: add ill-conditioned solver comparison`
 
 ## Project Goal
 
@@ -39,11 +39,12 @@ NumPy, SciPy, or scikit-learn.
 
 Phase 1.6 — Numerical Stability Analysis.
 
-Well-conditioned solver comparison experiment is complete and recorded.
-The remaining Phase 1.6 items are ill-conditioned cases, Hilbert and
-Vandermonde experiments, perturbation and noise experiments,
-residual vs forward-error analysis, backward-error analysis, and the
-cross-solver comparison.
+Well-conditioned and ill-conditioned solver comparison experiments
+are complete and recorded. The remaining Phase 1.6 items are the
+Hilbert-matrix experiment, the Vandermonde-matrix experiment,
+perturbation and noise experiments, residual vs forward-error
+analysis, backward-error analysis, and a consolidated cross-solver
+comparison.
 
 ## Completed
 
@@ -73,7 +74,7 @@ SVD has explicit tests for:
 
 The latest verified commit is:
 
-`8f5ef1a` — `experiment: add well-conditioned solver comparison`
+`371e1e7` — `experiment: add ill-conditioned solver comparison`
 
 The branch contains local commits that have not been pushed to
 `origin/main` (currently at `1e173aa`). Run `git status --short --branch`
@@ -81,10 +82,11 @@ for the current count. No push is performed without explicit instruction.
 
 ## Exact Next Action
 
-Continue Phase 1.6 — Numerical Stability Analysis. The well-conditioned
-solver comparison is complete. The next experiment is ill-conditioned
-cases on the same controlled matrix family, extending the target
-condition numbers toward 1e10, 1e12, 1e14, and 1e16.
+Continue Phase 1.6 — Numerical Stability Analysis. The next experiment
+is a Hilbert-matrix study, followed by a Vandermonde-matrix study, to
+test the same solvers on matrices whose structure produces strong
+ill-conditioning without relying on the controlled-singular-value
+family used so far.
 
 Each experiment follows the structure:
 

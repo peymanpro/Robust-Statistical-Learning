@@ -16,7 +16,7 @@ Phase 1.5 (SVD-based Least Squares) is complete and validated.
 
 ## Verified Commit
 
-`8f5ef1a` — `experiment: add well-conditioned solver comparison`
+`371e1e7` — `experiment: add ill-conditioned solver comparison`
 
 ## Completed
 
@@ -74,6 +74,12 @@ Phase 1.6 - Numerical Stability Analysis (partial):
 - Findings: NE forward error grows as eps * kappa^2; QR and SVD
   forward error grows as eps * kappa; small residual does not
   imply accurate solution (kappa = 1e8 case)
+- Ill-conditioned solver comparison experiment added
+- Findings: NE forward error exceeds 1 at kappa = 1e10 and above;
+  QR tracks eps * kappa up to kappa = 1e14; at kappa = 1e16 the
+  numerical rank drops and both NE and QR raise ValueError, while
+  SVD returns the minimum-norm solution; residual remains small
+  across all solvers even when forward error exceeds 1
 
 ## Current Implementation
 
