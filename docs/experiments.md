@@ -633,3 +633,103 @@ for Normal Equations is narrower than for QR and SVD.
 Script: experiments/well_conditioned_comparison.py
 
 Environment: Python 3.12.x, NumPy float64, seed 42.
+
+
+---
+
+# Experiment: Ill-Conditioned Solver Comparison
+
+## Hypothesis
+
+Extending the well-conditioned comparison toward larger condition numbers
+should reveal the region where Normal Equations becomes unusable, where
+QR begins to lose forward accuracy, and where the SVD numerical-rank
+truncation becomes the deciding mechanism. Residuals are expected to stay
+small across all solvers even when the solution is wrong.
+
+## Setup
+
+- Dimensions: m = 40, n = 5
+- Seed: 42
+- True solution: x = [1, 2, 3, 4, 5]^T
+- b = A x
+- Target condition numbers: 1e10, 1e12, 1e14, 1e16
+- Solvers: solve_normal_equations, solve_qr, solve_svd
+- Reference: the constructed x_true (exact mathematical solution)
+- Numerical rank: computed from singular values with the
+  sigma_max * max(m, n) * eps threshold
+- dtype: float64
+
+## Measurements
+
+| Target kappa | Actual kappa | Rank | NE fwd | QR fwd | SVD fwd | NE res | QR res | SVD res |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1.0e10 | 1.000e10 | 5 | 2.179e+00 | 1.050e-07 | 1.472e-07 | 1.233e-08 | 6.783e-16 | 3.818e-15 |
+| 1.0e12 | 1.000e12 | 5 | 1.198e+01 | 1.454e-05 | 1.296e-05 | 6.761e-08 | 8.144e-16 | 2.676e-15 |
+| 1.0e14 | 9.999e13 | 5 | 5.036e-01 | 1.325e-03 | 2.752e-03 | 3.883e-09 | 6.656e-16 | 2.035e-14 |
+| 1.0e16 | inf | 4 | ValueError | ValueError | 3.363e-02 | ValueError | ValueError | 3.159e-16 |
+
+Cross-solver solution differences:
+
+| Target kappa | ||NE-QR|| | ||QR-SVD|| | ||NE-SVD|| |
+|---:|---:|---:|---:|
+| 1.0e10 | 1.616e+01 | 3.131e-07 | 1.616e+01 |
+| 1.0e12 | 8.882e+01 | 1.172e-05 | 8.882e+01 |
+| 1.0e14 | 3.729e+00 | 1.058e-02 | 3.724e+00 |
+| 1.0e16 | n/a | n/a | n/a |
+
+## Interpretation
+
+Five patterns emerge on this matrix family, dimensions, seed, and dtype:
+
+1. Normal Equations is unusable across the entire tested range. Forward
+   errors exceed 1 at kappa = 1e10 and 1e12. The value at kappa = 1e12
+   (approximately 12) is larger than at kappa = 1e10 (approximately 2.2),
+   consistent with the eps * kappa^2 scaling combined with numerical
+   amplification. Normal Equations has no usable forward-accuracy regime
+   beyond the well-conditioned cases already recorded.
+
+2. QR forward error grows from 1.05e-07 at kappa = 1e10 to 1.33e-03 at
+   kappa = 1e14, following the eps * kappa scale observed in the
+   well-conditioned experiment.
+
+3. SVD forward error is within a factor of a few of QR across the
+   range where QR succeeds: 1.47e-07, 1.30e-05, 2.75e-03. The two solvers
+   are numerically equivalent on this family when both succeed.
+
+4. At kappa = 1e16, the numerical rank drops from 5 to 4. Both QR and
+   Normal Equations raise ValueError because both implementations
+   explicitly require full column rank. SVD does not require full column
+   rank; it truncates the singular value below the numerical-rank
+   threshold and returns the minimum-norm solution with forward error
+   3.36e-02. This is the deciding difference between the solvers at the
+   boundary of numerical rank deficiency.
+
+5. The residual remains small for every solver at every tested condition
+   number, including the cases where Normal Equations returns a solution
+   with forward error above 1 and the case where SVD operates in a
+   truncated-rank regime. A small residual continues to be insufficient
+   evidence of an accurate parameter vector.
+
+## Recommendation
+
+- Normal Equations should not be used beyond the well-conditioned
+  region identified previously (roughly kappa <= 1e4 on this family).
+  The ill-conditioned results here reinforce that recommendation directly.
+- QR is reliable on this family up to kappa approximately 1e14, with
+  forward error consistent with the eps * kappa scale. At kappa = 1e16
+  it rejects the system by contract, which is correct behavior: it does
+  not silently produce a rank-truncated solution.
+- SVD is the only solver of the three that produces a well-defined
+  answer when numerical rank drops. Its forward error at kappa = 1e16
+  (3.36e-02) reflects the truncated-rank problem, not an algorithmic
+  failure.
+- These numbers do not establish universal cutoffs. They are evidence
+  for this specific matrix family, dimensions, seed, and float64
+  environment.
+
+## Reproducibility
+
+Script: experiments/ill_conditioned_comparison.py
+
+Environment: Python 3.12.x, NumPy float64, seed 42.
