@@ -960,3 +960,116 @@ Six patterns emerge on this family:
 Script: experiments/vandermonde_comparison.py
 
 Environment: Python 3.12.x, NumPy float64, no random seed required.
+
+
+---
+
+# Experiment: Perturbation Sensitivity Study
+
+## Hypothesis
+
+For a moderately conditioned problem (kappa = 1e4) and perturbations
+applied to either the observations b or the design matrix A, the
+relative forward error of each solver should follow the classical
+perturbation bounds:
+
+    Part A: ||dx|| / ||x|| <= kappa(A) * ||db|| / ||b||
+    Part B: ||dx|| / ||x|| <= kappa(A) * ||dA|| / ||A||
+
+At very small perturbation magnitudes (below the rounding floor of the
+solver), the observed error should be dominated by rounding rather than
+by the perturbation, and solver differences should appear.
+
+## Setup
+
+- Dimensions: m = 40, n = 5
+- Target condition number: 1e4
+- Actual condition number: 1.000e4
+- Seed: 42
+- True solution: x = [1, 2, 3, 4, 5]^T
+- b = A x
+- Perturbation magnitudes: 1e-14, 1e-12, 1e-10, 1e-8, 1e-6
+- Perturbation direction: normalized Gaussian random vector or matrix
+  (single rng stream, seed 42)
+- Solvers: solve_normal_equations, solve_qr, solve_svd
+- dtype: float64
+
+## Measurements
+
+Part A - perturb observations b:
+
+| magnitude | bound | NE | QR | SVD |
+|---:|---:|---:|---:|---:|
+| 1.0e-14 | 1.000e-10 | 1.556e-10 | 6.439e-12 | 6.098e-12 |
+| 1.0e-12 | 1.000e-08 | 1.631e-09 | 5.882e-10 | 5.881e-10 |
+| 1.0e-10 | 1.000e-06 | 3.485e-08 | 3.196e-08 | 3.196e-08 |
+| 1.0e-08 | 1.000e-04 | 8.278e-06 | 8.281e-06 | 8.281e-06 |
+| 1.0e-06 | 1.000e-02 | 4.920e-04 | 4.920e-04 | 4.920e-04 |
+
+Part B - perturb design matrix A:
+
+| magnitude | bound | NE | QR | SVD |
+|---:|---:|---:|---:|---:|
+| 1.0e-14 | 1.000e-10 | 9.531e-09 | 5.685e-12 | 5.787e-12 |
+| 1.0e-12 | 1.000e-08 | 7.744e-10 | 1.610e-10 | 1.610e-10 |
+| 1.0e-10 | 1.000e-06 | 1.558e-07 | 1.572e-07 | 1.572e-07 |
+| 1.0e-08 | 1.000e-04 | 2.919e-06 | 2.918e-06 | 2.918e-06 |
+| 1.0e-06 | 1.000e-02 | 8.891e-04 | 8.891e-04 | 8.891e-04 |
+
+## Interpretation
+
+Five patterns emerge on this controlled problem:
+
+1. For magnitudes at or above 1e-10, the observed forward error grows
+   linearly with the perturbation magnitude, and the slope matches the
+   theoretical bound kappa * magnitude. Observed errors are one to two
+   orders of magnitude below the bound, which is expected: the bound is
+   worst-case and the perturbation direction is a single random draw.
+
+2. For magnitudes at or above 1e-10, all three solvers return identical
+   forward errors to machine precision. On this family, at kappa = 1e4,
+   the choice of solver does not affect the response to perturbation
+   within the tested range.
+
+3. For magnitudes at or below 1e-12, the rounding floor of each solver
+   dominates. QR and SVD reach approximately 6e-12 (Part A) and
+   approximately 6e-12 (Part B), consistent with the eps * kappa scale
+   observed on the well-conditioned experiment. Normal Equations reaches
+   a higher floor: 1.6e-10 in Part A and 9.5e-9 in Part B, again
+   consistent with its eps * kappa^2 error scaling.
+
+4. In Part A at magnitude 1e-14, the Normal Equations observed error
+   (1.56e-10) exceeds the theoretical bound (1e-10). This is not a
+   violation of the bound: the bound applies to the perturbed problem,
+   not to the sum of perturbation and rounding error. At this magnitude
+   the perturbation is below the rounding floor of every solver.
+
+5. Part B produces slightly larger errors than Part A for the same
+   magnitude. At magnitude 1e-10 the Part B error is 1.6e-07 while the
+   Part A error is 3.5e-08. Perturbing the design matrix changes the
+   conditioning of the problem itself, while perturbing the observations
+   only changes the right-hand side. The relative forward error from a
+   perturbation in A is accordingly larger than from the same relative
+   perturbation in b.
+
+## Recommendation
+
+- On moderately conditioned problems, the choice of solver does not
+  affect perturbation sensitivity within the tested magnitude range.
+  Above the rounding floor, all three solvers are equivalent.
+- Below the rounding floor, QR and SVD are preferable: their floor is
+  consistent with eps * kappa, while Normal Equations has a higher floor
+  consistent with eps * kappa^2.
+- Perturbations in the design matrix A have a larger effect on the
+  solution than perturbations of the same relative size in the
+  observations b. When data collection is under control, prioritizing
+  accuracy in A over accuracy in b is the more effective strategy on
+  this family.
+- These numbers are evidence for a single kappa, dimension set, seed,
+  and perturbation direction. They do not establish universal bounds.
+
+## Reproducibility
+
+Script: experiments/perturbation_sensitivity.py
+
+Environment: Python 3.12.x, NumPy float64, seed 42.
