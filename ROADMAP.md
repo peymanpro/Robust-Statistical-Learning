@@ -64,11 +64,11 @@ Legend:
 ## 1.5 SVD-based Least Squares
 
 - [x] Define SVD requirements and solver contract
-- [ ] Implement or wrap the selected SVD strategy
-- [ ] Test reconstruction and invariants
-- [ ] Implement SVD-based least squares
-- [ ] Test rank-deficient and numerical-rank behavior
-- [ ] Compare against reference behavior
+- [x] Implement or wrap the selected SVD strategy
+- [x] Test reconstruction and invariants
+- [x] Implement SVD-based least squares
+- [x] Test rank-deficient and numerical-rank behavior
+- [x] Compare against reference behavior
 
 ## 1.6 Numerical Stability Analysis
 

@@ -14,7 +14,7 @@ https://github.com/peymanpro/Robust-Statistical-Learning
 
 ## Verified Commit
 
-`ed2cdc2` — `test: complete QR solver contract coverage`
+`eda1c12` — `docs: record SVD numerical-rank experiment`
 
 ## Project Goal
 
@@ -37,7 +37,7 @@ NumPy, SciPy, or scikit-learn.
 
 ## Current Task
 
-Phase 1.5 — SVD-based Least Squares.
+Phase 1.6 — Numerical Stability Analysis.
 
 ## Completed
 
@@ -46,36 +46,45 @@ Phase 1.5 — SVD-based Least Squares.
 - Phase 1.2 Numerical Core
 - Phase 1.3 Normal Equations
 - Phase 1.4 QR-based Least Squares
+- Phase 1.5 SVD-based Least Squares
 
 ## Current State
 
-The project now contains two validated least-squares solvers:
+The project now contains three validated least-squares solvers:
 
 - Normal Equations
 - QR-based least squares
+- SVD-based least squares
 
-QR has explicit tests for:
-- reconstruction and orthogonality invariants
-- residual orthogonality
+SVD has explicit tests for:
+- reduced shape and orthogonality invariants
+- reconstruction and singular-value ordering
 - reference agreement with `numpy.linalg.lstsq`
-- agreement with Normal Equations
-- rejection of rank-deficient matrices
+- residual orthogonality
+- rank-deficient minimum-norm behavior
+- numerical-rank truncation
+- `rcond` validation
 
 The latest verified commit is:
 
-`ed2cdc2` — `test: complete QR solver contract coverage`
+`eda1c12` — `docs: record SVD numerical-rank experiment`
+
+The branch is ahead of `origin/main` (which is at `1e173aa`) by 7 commits.
+No push is performed without explicit instruction.
 
 ## Exact Next Action
 
-Start Phase 1.5 by defining the SVD requirements and contract before writing
-the implementation.
+Begin Phase 1.6 — Numerical Stability Analysis. Start with well-conditioned
+and ill-conditioned controlled cases, following the structure:
+
+Mathematical Question -> Hypothesis -> Controlled Setup -> Measurement ->
+Evidence -> Interpretation -> Limitation -> Recommendation.
 
 ## Engineering Rules
 
 - Never hide failures.
 - Never guess past failures.
 - Never continue past unresolved failures.
-- Inspect status and diff before commits.
 - Keep commits atomic and meaningful.
 - Keep numerical core independent from infrastructure.
 - Use SOLID and design patterns only when they solve real problems.

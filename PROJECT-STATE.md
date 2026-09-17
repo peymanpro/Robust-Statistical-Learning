@@ -10,13 +10,13 @@
 
 ## Current Task
 
-Phase 1.5 — SVD-based Least Squares.
+Phase 1.6 — Numerical Stability Analysis.
 
-Requirements and solver contract are defined before implementation.
+Phase 1.5 (SVD-based Least Squares) is complete and validated.
 
 ## Verified Commit
 
-`ed2cdc2` — `test: complete QR solver contract coverage`
+`eda1c12` — `docs: record SVD numerical-rank experiment`
 
 ## Completed
 
@@ -56,6 +56,18 @@ Phase 1.4 — QR-based Least Squares:
 - Comparison with `numpy.linalg.lstsq`
 - Ill-conditioning comparison documented
 
+Phase 1.5 — SVD-based Least Squares:
+- SVD requirements and solver contract defined
+- Reduced SVD strategy selected
+- `compute_svd` implemented with `full_matrices=False`
+- `solve_svd` implemented using the SVD pseudoinverse
+- Rank-deficient systems supported via numerical-rank truncation
+- Reconstruction, orthogonality, and ordering invariants tested
+- Residual orthogonality tested
+- Minimum-norm behavior tested
+- Comparison with `numpy.linalg.lstsq`
+- Numerical-rank stability experiment recorded in `docs/experiments.md`
+
 ## Current Implementation
 
 The Numerical Core provides:
@@ -70,30 +82,44 @@ The learning layer provides:
 - Least-squares mathematical model
 - Normal Equations solver
 - QR-based least-squares solver
+- SVD-based least-squares solver
+
+The SVD solver uses reduced SVD:
+
+    A = U @ diag(s) @ V.T
+    x = V @ diag(1/s) @ U.T @ b
+
+Singular values below the numerical-rank threshold are truncated. Rank-deficient systems return the minimum-norm solution.
 
 The QR solver uses reduced QR factorization:
 
     A = QR
     Rx = Q.T @ b
 
-The QR solver currently requires full column rank and raises an explicit `ValueError` for rank-deficient systems.
+The QR solver requires full column rank and raises an explicit `ValueError` for rank-deficient systems.
 
 ## Validation
 
 | Check | Status |
 |---|---|
-| pytest | PASS |
+| pytest | PASS (55 tests) |
 | Ruff | PASS |
-| mypy | PASS |
+| mypy | PASS (19 source files) |
 | git diff --check | PASS |
 
 ## Next
 
-1. Implement `compute_svd` using reduced SVD.
-2. Implement `solve_svd` using the SVD pseudoinverse.
-3. Support rank-deficient systems through numerical-rank truncation.
-4. Test reconstruction, orthogonality, ordering, and solver invariants.
-5. Compare against `numpy.linalg.lstsq`.
+Begin Phase 1.6 — Numerical Stability Analysis.
+
+1. Well-conditioned controlled cases.
+2. Ill-conditioned controlled cases.
+3. Hilbert-matrix experiment.
+4. Vandermonde-matrix experiment.
+5. Perturbation experiments.
+6. Noise experiments.
+7. Residual vs forward-error analysis.
+8. Backward-error analysis.
+9. Normal Equations vs QR vs SVD comparison.
 
 ## Constraints
 
