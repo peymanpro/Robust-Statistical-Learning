@@ -478,3 +478,65 @@ On this controlled matrix family, QR maintains substantially smaller forward err
 Both methods can still produce small residuals. Therefore, a small residual alone is not sufficient evidence of an accurate parameter vector.
 
 This experiment does not establish a universal superiority threshold; it is evidence for this matrix family, size, seed, scaling, and floating-point environment.
+
+
+---
+
+# Experiment: SVD Numerical Rank and Reference Agreement
+
+## Hypothesis
+
+The SVD least-squares solver should:
+
+- agree with numpy.linalg.lstsq on full-rank systems across conditioning regimes
+- preserve residual orthogonality even under ill-conditioning
+- correctly truncate singular values below the numerical-rank threshold
+- return the minimum-norm solution for rank-deficient systems
+
+## Setup
+
+- Dimensions: m = 40, n = 5
+- Seed: 42
+- True solution: x = [1, 2, 3, 4, 5]^T
+- b = A x
+- Target condition numbers: 1e2, 1e6, 1e10, 1e14, 1e16
+- Solver: solve_svd (SVD pseudoinverse)
+- Reference solver: numpy.linalg.lstsq(rcond=None)
+- Numerical-rank threshold: sigma_max * max(m, n) * eps
+
+## Measurements
+
+| Target kappa(A) | Actual kappa(A) | Rank | Reference Error | Residual |
+|---:|---:|---:|---:|---:|
+| 1e2  | 1.000e2  | 5 | 1.029e-15 | 4.279e-15 |
+| 1e6  | 1.000e6  | 5 | 6.845e-12 | 3.817e-15 |
+| 1e10 | 1.000e10 | 5 | 3.767e-08 | 3.446e-15 |
+| 1e14 | 9.996e13 | 5 | 3.604e-04 | 1.595e-15 |
+| 1e16 | inf      | 4 | 6.067e-06 | 1.923e-15 |
+
+Rank-deficient case:
+
+    computed        = [1. 1.]
+    reference       = [1. 1.]
+    reference_error = 2.483e-16
+    residual        = 8.882e-16
+    solution_norm   = 1.414e+00
+
+## Interpretation
+
+- For condition numbers up to 1e14, the SVD solver closely tracks the NumPy reference. The forward error grows roughly like kappa(A) * eps.
+- At kappa(A) = 1e16, the computed condition number is inf and the numerical rank drops from 5 to 4. Both our solver and numpy.linalg.lstsq operate on the same numerical-rank interpretation. Agreement with NumPy in this case does not imply accuracy relative to the original x_true.
+- The residual stays near machine precision across all tested conditioning regimes, consistent with backward stability.
+- The rank-deficient case returns the minimum-norm solution, matching the NumPy reference.
+
+## Recommendation
+
+- Use the SVD solver when numerical rank deficiency is possible or when explicit control over rcond is required.
+- The numerical-rank threshold used here is not a universal cutoff. It is specific to this matrix family, dimensions, seed, scaling, and float64 environment.
+- Agreement with numpy.linalg.lstsq does not by itself establish correctness against the true mathematical solution. Both solvers are finite-precision interpretations of the same problem.
+
+## Reproducibility
+
+Script: experiments/svd_rank_stability.py
+
+Environment: Python 3.12.x, NumPy float64, seed 42.
