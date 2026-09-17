@@ -111,6 +111,97 @@ The least-squares solution via SVD:
 
 $$\hat{x} = A^+ b = V\Sigma^+ U^T b$$
 
+## SVD Solver Contract
+
+The project uses Singular Value Decomposition as the numerically rank-aware
+least-squares method.
+
+For
+
+\[
+A = U\Sigma V^T
+\]
+
+the reduced decomposition uses
+
+\[
+U \in \mathbb{R}^{m \times k},\quad
+\Sigma \in \mathbb{R}^{k \times k},\quad
+V^T \in \mathbb{R}^{k \times n},
+\quad k = \min(m,n).
+\]
+
+The decomposition must satisfy the numerical invariants:
+
+\[
+A \approx U\Sigma V^T
+\]
+
+\[
+U^TU \approx I
+\]
+
+\[
+V^TV \approx I
+\]
+
+The singular values must be returned in non-increasing order.
+
+### SVD Least-Squares Solution
+
+The least-squares solution is computed through the pseudoinverse:
+
+\[
+\hat{x}=A^+b=V\Sigma^+U^Tb.
+\]
+
+For a singular value \(\sigma_i\) below the numerical-rank threshold,
+its reciprocal is treated as zero rather than computed explicitly.
+
+When `rcond=None`, the numerical-rank threshold is defined as
+
+\[
+\tau =
+\sigma_{\max}\max(m,n)\epsilon,
+\]
+
+where \(\epsilon\) is the floating-point machine precision for the working
+dtype.
+
+The SVD solver therefore supports rank-deficient systems and returns the
+minimum-norm least-squares solution.
+
+### Solver Contract
+
+The implementation has two responsibilities:
+
+1. `compute_svd(A)` — return the reduced SVD factors.
+2. `solve_svd(A, b, rcond=None)` — solve least squares using the SVD
+   pseudoinverse.
+
+The project uses `numpy.linalg.svd` as the numerical decomposition backend.
+The purpose is numerical investigation and traceability, not reimplementation
+of a production SVD algorithm.
+
+### Validation Requirements
+
+SVD validation must cover:
+
+- decomposition shapes
+- reconstruction
+- orthogonality
+- singular-value ordering
+- exact full-rank systems
+- overdetermined systems
+- reference agreement with `numpy.linalg.lstsq`
+- residual orthogonality
+- rank-deficient systems
+- numerical-rank behavior
+- minimum-norm behavior for rank-deficient systems
+
+These requirements connect the mathematical definition to the implementation,
+numerical properties, invariants, and tests.
+
 ## Condition Number
 
 ### Definition

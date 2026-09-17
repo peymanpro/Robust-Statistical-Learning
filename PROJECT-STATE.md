@@ -12,6 +12,8 @@
 
 Phase 1.5 — SVD-based Least Squares.
 
+Requirements and solver contract are defined before implementation.
+
 ## Verified Commit
 
 `ed2cdc2` — `test: complete QR solver contract coverage`
@@ -87,12 +89,11 @@ The QR solver currently requires full column rank and raises an explicit `ValueE
 
 ## Next
 
-1. Define SVD requirements.
-2. Decide the selected SVD strategy.
-3. Define SVD reconstruction and orthogonality invariants.
-4. Implement or wrap the selected SVD strategy.
-5. Implement SVD-based least squares.
-6. Compare against NumPy/SciPy reference behavior.
+1. Implement `compute_svd` using reduced SVD.
+2. Implement `solve_svd` using the SVD pseudoinverse.
+3. Support rank-deficient systems through numerical-rank truncation.
+4. Test reconstruction, orthogonality, ordering, and solver invariants.
+5. Compare against `numpy.linalg.lstsq`.
 
 ## Constraints
 
