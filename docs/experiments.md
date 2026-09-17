@@ -540,3 +540,96 @@ Rank-deficient case:
 Script: experiments/svd_rank_stability.py
 
 Environment: Python 3.12.x, NumPy float64, seed 42.
+
+
+---
+
+# Experiment: Well-Conditioned Solver Agreement
+
+## Hypothesis
+
+For well-conditioned systems (small kappa), all three least-squares solvers
+(Normal Equations, QR, SVD) should return forward errors on the order of
+machine epsilon times the condition number, and residuals near machine
+precision. If this holds, the experiment establishes a baseline for
+comparison against ill-conditioned cases.
+
+## Setup
+
+- Dimensions: m = 40, n = 5
+- Seed: 42
+- True solution: x = [1, 2, 3, 4, 5]^T
+- b = A x
+- Target condition numbers: 1, 1e2, 1e4, 1e6, 1e8
+- Solvers: solve_normal_equations, solve_qr, solve_svd
+- Reference: the constructed x_true (exact mathematical solution)
+- dtype: float64
+
+## Measurements
+
+| Target kappa | Actual kappa | NE fwd | QR fwd | SVD fwd | NE res | QR res | SVD res |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1.0e0 | 1.000e0 | 2.760e-16 | 2.744e-16 | 4.828e-16 | 2.271e-15 | 2.386e-15 | 3.781e-15 |
+| 1.0e2 | 1.000e2 | 5.324e-13 | 2.552e-15 | 2.221e-15 | 4.120e-14 | 1.492e-15 | 5.777e-15 |
+| 1.0e4 | 1.000e4 | 1.020e-09 | 3.067e-14 | 1.363e-13 | 7.740e-13 | 3.210e-16 | 2.247e-14 |
+| 1.0e6 | 1.000e6 | 3.421e-07 | 3.968e-12 | 2.085e-12 | 4.717e-12 | 3.486e-16 | 7.739e-16 |
+| 1.0e8 | 1.000e8 | 2.701e-01 | 7.339e-09 | 1.329e-09 | 2.003e-08 | 7.390e-16 | 1.882e-15 |
+
+Cross-solver solution differences:
+
+| Target kappa | ||NE-QR|| | ||QR-SVD|| | ||NE-SVD|| |
+|---:|---:|---:|---:|
+| 1.0e0 | 1.676e-15 | 4.021e-15 | 3.179e-15 |
+| 1.0e2 | 3.957e-12 | 1.443e-14 | 3.944e-12 |
+| 1.0e4 | 7.566e-09 | 1.222e-12 | 7.565e-09 |
+| 1.0e6 | 2.537e-06 | 1.398e-11 | 2.537e-06 |
+| 1.0e8 | 2.003e+00 | 4.458e-08 | 2.003e+00 |
+
+## Interpretation
+
+Four patterns emerge on this matrix family, dimensions, seed, and dtype:
+
+1. At kappa = 1, all three solvers agree to machine precision. Forward
+   errors are on the order of eps and residuals are on the order of
+   eps * ||b||.
+
+2. For QR and SVD, forward error grows approximately as eps * kappa across
+   the tested range. At kappa = 1e8 their forward errors remain around
+   7e-9 and 1e-9 respectively.
+
+3. For Normal Equations, forward error grows approximately as eps * kappa^2
+   and diverges from QR/SVD as kappa increases. At kappa = 1e8 the Normal
+   Equations forward error reaches 2.7e-1 while QR and SVD remain below
+   1e-8. The condition-number-squared behavior of the normal equations is
+   therefore visible on this family.
+
+4. The residual remains small for all three solvers at all tested condition
+   numbers, including the kappa = 1e8 case where Normal Equations is
+   effectively incorrect (forward error 2.7e-1, residual 2.0e-8). A small
+   residual is not sufficient evidence of an accurate parameter vector.
+
+The cross-solver differences confirm the picture: ||QR-SVD|| stays below
+5e-8 across the tested range, while ||NE-QR|| grows from 1.7e-15 to 2.0e0
+as kappa increases. Normal Equations is the outlier.
+
+The original hypothesis that all three solvers behave similarly for
+kappa up to 1e8 is rejected on this family. The well-conditioned region
+for Normal Equations is narrower than for QR and SVD.
+
+## Recommendation
+
+- For kappa up to roughly 1e4, all three solvers provide forward errors
+  below 1e-9 on this family and may be used interchangeably.
+- For kappa above roughly 1e6, Normal Equations should not be relied upon
+  for forward accuracy even though its residual remains small.
+- QR and SVD remain numerically reliable across the entire tested range
+  (kappa up to 1e8) on this family, with forward errors consistent with
+  the eps * kappa scale.
+- These numbers do not establish universal cutoffs. They are evidence for
+  this specific matrix family, dimensions, seed, and float64 environment.
+
+## Reproducibility
+
+Script: experiments/well_conditioned_comparison.py
+
+Environment: Python 3.12.x, NumPy float64, seed 42.
