@@ -55,11 +55,11 @@ Legend:
 
 ## 1.4 QR-based Least Squares
 
-- [ ] Define QR requirements
-- [ ] Implement or wrap the selected QR strategy
-- [ ] Test reconstruction and invariants
-- [ ] Implement QR-based least squares
-- [ ] Compare against reference behavior
+- [x] Define QR requirements
+- [x] Implement or wrap the selected QR strategy
+- [x] Test reconstruction and invariants
+- [x] Implement QR-based least squares
+- [x] Compare against reference behavior
 
 ## 1.5 SVD-based Least Squares
 

@@ -6,28 +6,28 @@
 
 ## Current Phase
 
-**Phase 1 â€” Least Squares & Numerical Stability**
+**Phase 1 — Least Squares & Numerical Stability**
 
 ## Current Task
 
-Phase 1.3 â€” Normal Equations.
+Phase 1.5 — SVD-based Least Squares.
 
 ## Verified Commit
 
-`32adadb` â€” `feat: validate least squares dimensions`
+`ed2cdc2` — `test: complete QR solver contract coverage`
 
 ## Completed
 
-Phase 0 â€” Foundation.
+Phase 0 — Foundation.
 
-Phase 1.1 â€” Least-squares mathematical foundation:
+Phase 1.1 — Least-squares mathematical foundation:
 - Least-squares optimization formulation
 - Residual and residual norm
 - Matrix/vector conventions
 - Numerical tolerances
 - Mathematical invariant tests
 
-Phase 1.2 â€” Numerical Core:
+Phase 1.2 — Numerical Core:
 - Core package boundaries
 - Numerical validation
 - L2 and Frobenius norms
@@ -35,9 +35,28 @@ Phase 1.2 â€” Numerical Core:
 - Residual calculation
 - Least-squares dimension validation
 
+Phase 1.3 — Normal Equations:
+- Normal Equations solver
+- Exact and recoverable systems
+- Overdetermined systems
+- Failure conditions
+- Conditioning experiment
+- Normal Equations conditioning documentation
+
+Phase 1.4 — QR-based Least Squares:
+- QR requirements defined
+- Reduced QR strategy selected
+- QR least-squares solver implemented
+- Reconstruction and orthogonality invariants tested
+- Residual orthogonality tested
+- Full-column-rank failure contract tested
+- Comparison with Normal Equations
+- Comparison with `numpy.linalg.lstsq`
+- Ill-conditioning comparison documented
+
 ## Current Implementation
 
-The Numerical Core now provides:
+The Numerical Core provides:
 - Matrix and vector conventions
 - Numerical tolerances
 - Input validation
@@ -45,32 +64,44 @@ The Numerical Core now provides:
 - Condition-number calculation
 - Residual calculations
 
-The learning layer keeps a compatibility-facing least-squares API and delegates residual calculations to the Numerical Core.
+The learning layer provides:
+- Least-squares mathematical model
+- Normal Equations solver
+- QR-based least-squares solver
 
-No least-squares solver has been implemented yet.
+The QR solver uses reduced QR factorization:
 
-## Next
+    A = QR
+    Rx = Q.T @ b
 
-1. Define Normal Equations solver requirements.
-2. Implement a solver for valid full-column-rank systems.
-3. Test exact and recoverable systems.
-4. Test overdetermined systems.
-5. Define failure conditions.
-6. Document conditioning implications.
+The QR solver currently requires full column rank and raises an explicit `ValueError` for rank-deficient systems.
 
 ## Validation
 
 | Check | Status |
 |---|---|
 | pytest | PASS |
-| ruff | PASS |
+| Ruff | PASS |
 | mypy | PASS |
 | git diff --check | PASS |
+
+## Next
+
+1. Define SVD requirements.
+2. Decide the selected SVD strategy.
+3. Define SVD reconstruction and orthogonality invariants.
+4. Implement or wrap the selected SVD strategy.
+5. Implement SVD-based least squares.
+6. Compare against NumPy/SciPy reference behavior.
 
 ## Constraints
 
 - Never hide failures.
 - Never guess past failures.
+- Never continue past unresolved failures.
 - Inspect status and diff before commits.
+- Keep commits atomic and meaningful.
 - Keep numerical core independent from infrastructure.
-- Use SOLID and design patterns only when justified.
+- Use SOLID and design patterns only when they solve real problems.
+- Mathematical claims require tests and reproducible evidence.
+- Documentation must reflect the actual repository state.
