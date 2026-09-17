@@ -1,4 +1,4 @@
-﻿"""SVD-based least-squares solver."""
+"""SVD-based least-squares solver."""
 
 from __future__ import annotations
 

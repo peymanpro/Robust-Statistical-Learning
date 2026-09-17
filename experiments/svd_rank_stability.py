@@ -1,4 +1,4 @@
-﻿"""SVD numerical-rank and least-squares reference experiment."""
+"""SVD numerical-rank and least-squares reference experiment."""
 
 import numpy as np
 

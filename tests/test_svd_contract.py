@@ -1,4 +1,4 @@
-﻿import numpy as np
+import numpy as np
 from numpy.testing import assert_allclose
 
 from robust_statistical_learning.core.tolerances import ATOL, RTOL
