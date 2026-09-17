@@ -364,11 +364,13 @@ Tests are organized into files:
 
 ```text
 tests/
-├── test_core_invariants.py     # Layer 1: invariants
-├── test_numerical_behavior.py  # Layer 2: perturbations, noise, etc.
-├── test_reference_validation.py # Layer 3: NumPy/SciPy/scikit-learn
-├── test_engineering.py          # Layer 4: API, contracts, determinism
-└── conftest.py                  # Shared fixtures and utilities
+├── test_foundation.py              # project foundation checks
+├── test_numerical_conventions.py   # array and dtype conventions
+├── test_core_numerical.py          # norms, condition number, residuals
+├── test_least_squares.py           # least-squares mathematical model
+├── test_normal_equations.py        # normal equations solver contract
+├── test_qr_contract.py             # QR solver contract
+└── test_svd_contract.py            # SVD solver contract
 ```
 
 ## Testing Infrastructure
