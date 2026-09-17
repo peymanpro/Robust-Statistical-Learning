@@ -323,7 +323,7 @@ where \(U_k\), \(\Sigma_k\), \(V_k^T\) use only the first \(k\) singular values 
 
 The reconstruction error:
 
-$$\|X - \tilde{X}\|_F = \sum_{i=k+1}^n \sigma_i^2$$
+$$\|X - \tilde{X}\|_F^2 = \sum_{i=k+1}^n \sigma_i^2$$
 
 ## Mathematical Traceability
 
