@@ -16,7 +16,7 @@ Phase 1.5 (SVD-based Least Squares) is complete and validated.
 
 ## Verified Commit
 
-`eda1c12` — `docs: record SVD numerical-rank experiment`
+`8f5ef1a` — `experiment: add well-conditioned solver comparison`
 
 ## Completed
 
@@ -67,6 +67,13 @@ Phase 1.5 — SVD-based Least Squares:
 - Minimum-norm behavior tested
 - Comparison with `numpy.linalg.lstsq`
 - Numerical-rank stability experiment recorded in `docs/experiments.md`
+
+Phase 1.6 - Numerical Stability Analysis (partial):
+- Well-conditioned solver comparison experiment added
+- Evidence recorded in `docs/experiments.md`
+- Findings: NE forward error grows as eps * kappa^2; QR and SVD
+  forward error grows as eps * kappa; small residual does not
+  imply accurate solution (kappa = 1e8 case)
 
 ## Current Implementation
 

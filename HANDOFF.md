@@ -14,7 +14,7 @@ https://github.com/peymanpro/Robust-Statistical-Learning
 
 ## Verified Commit
 
-`eda1c12` — `docs: record SVD numerical-rank experiment`
+`8f5ef1a` — `experiment: add well-conditioned solver comparison`
 
 ## Project Goal
 
@@ -38,6 +38,12 @@ NumPy, SciPy, or scikit-learn.
 ## Current Task
 
 Phase 1.6 — Numerical Stability Analysis.
+
+Well-conditioned solver comparison experiment is complete and recorded.
+The remaining Phase 1.6 items are ill-conditioned cases, Hilbert and
+Vandermonde experiments, perturbation and noise experiments,
+residual vs forward-error analysis, backward-error analysis, and the
+cross-solver comparison.
 
 ## Completed
 
@@ -67,7 +73,7 @@ SVD has explicit tests for:
 
 The latest verified commit is:
 
-`eda1c12` — `docs: record SVD numerical-rank experiment`
+`8f5ef1a` — `experiment: add well-conditioned solver comparison`
 
 The branch is ahead of `origin/main` (which is at `1e173aa`) by 7 commits.
 No push is performed without explicit instruction.

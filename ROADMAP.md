@@ -72,7 +72,7 @@ Legend:
 
 ## 1.6 Numerical Stability Analysis
 
-- [ ] Well-conditioned cases
+- [x] Well-conditioned cases
 - [ ] Ill-conditioned cases
 - [ ] Hilbert-matrix experiment
 - [ ] Vandermonde-matrix experiment
