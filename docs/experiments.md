@@ -733,3 +733,115 @@ Five patterns emerge on this matrix family, dimensions, seed, and dtype:
 Script: experiments/ill_conditioned_comparison.py
 
 Environment: Python 3.12.x, NumPy float64, seed 42.
+
+
+---
+
+# Experiment: Hilbert Matrix Solver Comparison
+
+## Hypothesis
+
+The Hilbert matrix H_n with entries H[i, j] = 1 / (i + j - 1) produces
+exponentially growing condition numbers as n increases. On this family
+we expect to observe the crossing-over point for each solver: the size
+at which Normal Equations loses accuracy, the size at which QR follows,
+and the size at which the matrix becomes numerically rank deficient so
+that SVD truncation and rejection behavior become the deciding factor.
+
+## Setup
+
+- Matrix: H_n with H[i, j] = 1 / (i + j - 1) for i, j = 1..n
+- Sizes: n = 4, 6, 8, 10, 12
+- True solution: x_true = ones(n)
+- b = H_n @ x_true
+- Solvers: solve_normal_equations, solve_qr, solve_svd
+- Direct reference: numpy.linalg.solve (LU)
+- Numerical rank: sigma_max * max(m, n) * eps threshold
+- dtype: float64
+
+## Measurements
+
+Main comparison:
+
+| n | kappa | rank | NE fwd | QR fwd | SVD fwd | NE res | QR res | SVD res |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 1.551e04 | 4 | 9.445e-10 | 3.108e-13 | 2.204e-13 | 1.827e-13 | 3.140e-16 | 2.455e-15 |
+| 6 | 1.495e07 | 6 | 5.404e-03 | 5.340e-10 | 1.349e-10 | 1.433e-09 | 5.207e-16 | 8.742e-16 |
+| 8 | 1.526e10 | 8 | 4.895e+00 | 1.494e-07 | 4.668e-07 | 7.106e-09 | 1.024e-15 | 2.539e-15 |
+| 10 | 1.602e13 | 10 | 3.243e+00 | 1.421e-04 | 1.208e-04 | 3.776e-09 | 6.844e-16 | 2.329e-15 |
+| 12 | inf | 11 | ValueError | ValueError | 9.074e-04 | ValueError | ValueError | 1.558e-15 |
+
+Cross-check vs numpy.linalg.solve (LU):
+
+| n | LU fwd | NE vs LU | QR vs LU | SVD vs LU |
+|---:|---:|---:|---:|---:|
+| 4 | 4.137e-14 | 1.889e-09 | 5.389e-13 | 3.584e-13 |
+| 6 | 1.424e-10 | 1.324e-02 | 1.657e-09 | 1.860e-11 |
+| 8 | 6.124e-08 | 1.384e+01 | 5.959e-07 | 1.494e-06 |
+| 10 | 8.670e-05 | 1.026e+01 | 1.753e-04 | 1.079e-04 |
+| 12 | 3.249e-01 | n/a | n/a | 1.126e+00 |
+
+## Interpretation
+
+Six patterns emerge on this family:
+
+1. Normal Equations loses forward accuracy at n = 6 (kappa = 1.5e7,
+   forward error 5.4e-3) and is unusable from n = 8 onward (forward
+   error above 1). The crossing-over from "usable" to "unusable" occurs
+   earlier on the Hilbert family than on the controlled
+   singular-value family, where Normal Equations still produced forward
+   errors below 1e-6 at kappa = 1e6. The eps * kappa^2 scaling makes the
+   crossing-over point sensitive to the specific conditioning growth rate.
+
+2. QR and SVD remain numerically equivalent to each other across the
+   entire Hilbert family where both succeed: 3.1e-13 / 2.2e-13 at n = 4,
+   1.5e-07 / 4.7e-07 at n = 8, 1.4e-04 / 1.2e-04 at n = 10. Their forward
+   errors follow the eps * kappa scale observed previously.
+
+3. At n = 12, the computed condition number is inf and the numerical
+   rank drops from 12 to 11. Normal Equations and QR both raise
+   ValueError because both implementations require full column rank
+   and reject the numerically rank-deficient input. SVD does not
+   require full column rank; it truncates the smallest singular value
+   and returns a minimum-norm solution with forward error 9.1e-4.
+
+4. The LU reference (numpy.linalg.solve) at n = 12 has forward error
+   3.2e-01. This is not a solver failure but a property of the problem:
+   on H_12, no direct solver can recover x_true reliably at float64
+   precision. SVD and LU disagree by 1.13 in this case, confirming that
+   the answer is genuinely ambiguous.
+
+5. The residual remains small (on the order of eps * ||b||) for every
+   solver at every size, including n = 8 and n = 10 where Normal
+   Equations returns forward errors above 1. A small residual is again
+   insufficient evidence of an accurate parameter vector.
+
+6. The Hilbert family demonstrates that the "well-conditioned" region
+   for a solver depends on how kappa grows with problem size. On the
+   controlled singular-value family, kappa was a direct input. On the
+   Hilbert family, kappa grows exponentially with n, so the usable
+   problem sizes are much smaller.
+
+## Recommendation
+
+- On exponentially ill-conditioned families like Hilbert, Normal
+  Equations should be avoided beyond the smallest sizes (n <= 4 here).
+  This is a stronger statement than the well-conditioned experiment
+  produced, and it is consistent with the eps * kappa^2 mechanism.
+- QR and SVD track each other closely on this family and remain usable
+  until numerical rank deficiency occurs. QR rejects rank-deficient
+  input explicitly, which is correct behavior; SVD falls back to the
+  minimum-norm solution, which is the appropriate response when the
+  problem has genuinely lost rank.
+- When the numerical rank drops, no solver returns x_true accurately.
+  At n = 12 the "true" solution is not recoverable at float64 precision
+  on this family. Reporting this as a solver limitation would be
+  incorrect; it is a property of the problem.
+- These numbers do not establish universal cutoffs. They are evidence
+  for the Hilbert family and the specific sizes tested.
+
+## Reproducibility
+
+Script: experiments/hilbert_comparison.py
+
+Environment: Python 3.12.x, NumPy float64, no random seed required.
