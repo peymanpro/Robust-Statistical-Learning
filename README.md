@@ -32,7 +32,7 @@ $$\hat{x}_{\lambda}=\operatorname*{arg\,min}_x \left(\|Ax-b\|_2^2+\lambda\|x\|_2
 
 | Phase | Focus | Status |
 | ----- | ----- | ------ |
-| 1 | Least Squares & Numerical Stability | Not started |
+| 1 | Least Squares & Numerical Stability | In progress |
 | 2 | Regularization (Ridge/Tikhonov) | Not started |
 | 3 | Principal Component Analysis | Not started |
 | 4 | Real Data & Validation | Not started |
@@ -76,7 +76,7 @@ Numerical Core (decompositions, solvers, norms, condition numbers)
 
 ## Current Status
 
-Repository initialized. Implementation not yet started. See [PROJECT-STATE.md](PROJECT-STATE.md) for detailed state.
+Active numerical investigation. See [PROJECT-STATE.md](PROJECT-STATE.md) for detailed state.
 
 ## Long-Term Vision
 
