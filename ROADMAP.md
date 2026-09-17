@@ -75,7 +75,7 @@ Legend:
 - [x] Well-conditioned cases
 - [x] Ill-conditioned cases
 - [x] Hilbert-matrix experiment
-- [ ] Vandermonde-matrix experiment
+- [x] Vandermonde-matrix experiment
 - [ ] Perturbation experiments
 - [ ] Noise experiments
 - [ ] Residual vs forward-error analysis

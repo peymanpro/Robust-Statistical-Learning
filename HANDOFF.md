@@ -14,7 +14,7 @@ https://github.com/peymanpro/Robust-Statistical-Learning
 
 ## Verified Commit
 
-`8e9a219` — `experiment: add Hilbert matrix solver comparison`
+`8e1939b` — `experiment: add Vandermonde matrix solver comparison`
 
 ## Project Goal
 
@@ -39,11 +39,11 @@ NumPy, SciPy, or scikit-learn.
 
 Phase 1.6 — Numerical Stability Analysis.
 
-Well-conditioned, ill-conditioned, and Hilbert-matrix experiments
-are complete and recorded. The remaining Phase 1.6 items are the
-Vandermonde-matrix experiment, perturbation and noise experiments,
-residual vs forward-error analysis, backward-error analysis, and a
-consolidated cross-solver comparison.
+Well-conditioned, ill-conditioned, Hilbert, and Vandermonde
+experiments are complete and recorded. The remaining Phase 1.6
+items are perturbation and noise experiments, residual vs
+forward-error analysis, backward-error analysis, and a consolidated
+cross-solver comparison.
 
 ## Completed
 
@@ -73,7 +73,7 @@ SVD has explicit tests for:
 
 The latest verified commit is:
 
-`8e9a219` — `experiment: add Hilbert matrix solver comparison`
+`8e1939b` — `experiment: add Vandermonde matrix solver comparison`
 
 The branch contains local commits that have not been pushed to
 `origin/main` (currently at `1e173aa`). Run `git status --short --branch`
@@ -82,11 +82,11 @@ for the current count. No push is performed without explicit instruction.
 ## Exact Next Action
 
 Continue Phase 1.6 — Numerical Stability Analysis. The next experiment
-is a Vandermonde-matrix study. Vandermonde matrices arise from
-polynomial fitting and produce conditioning that grows with the
-number of points and with the evaluation nodes; the experiment will
-test whether the solver-ordering observed on the Hilbert and
-controlled-singular-value families carries over.
+is a perturbation study: fix a well-conditioned problem and perturb
+either the design matrix or the observations by controlled amounts,
+then measure how each solver's forward error responds. The goal is
+to separate conditioning-induced error from perturbation-induced
+error and confirm the backward-stability claim empirically.
 
 Each experiment follows the structure:
 

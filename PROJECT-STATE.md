@@ -16,7 +16,7 @@ Phase 1.5 (SVD-based Least Squares) is complete and validated.
 
 ## Verified Commit
 
-`8e9a219` — `experiment: add Hilbert matrix solver comparison`
+`8e1939b` — `experiment: add Vandermonde matrix solver comparison`
 
 ## Completed
 
@@ -85,6 +85,12 @@ Phase 1.6 - Numerical Stability Analysis (partial):
   eps * kappa until n = 10; at n = 12 numerical rank drops and
   NE and QR raise ValueError while SVD returns minimum-norm; LU
   reference at n = 12 is itself unusable (forward error 3.2e-1)
+- Vandermonde matrix experiment added
+- Findings: with uniform nodes, NE usable up to kappa ~ 1e6, fails
+  at n = 12 and rejects the problem at n = 15; QR and SVD remain
+  equivalent and track eps * kappa across the full range; no rank
+  deficiency observed; numerical rank grows more slowly than on
+  the Hilbert family
 
 ## Current Implementation
 
