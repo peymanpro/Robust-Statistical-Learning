@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from numpy.testing import assert_allclose
 
 from robust_statistical_learning.core.tolerances import ATOL, RTOL
@@ -82,3 +83,34 @@ def test_solve_qr_matches_numpy_lstsq_reference() -> None:
     actual = solve_qr(matrix, observations)
     expected = np.linalg.lstsq(matrix, observations, rcond=None)[0]
     assert_allclose(actual, expected, rtol=RTOL, atol=ATOL)
+
+def test_solve_qr_residual_is_orthogonal_to_column_space() -> None:
+    matrix = np.array([
+        [1.0, 0.0],
+        [1.0, 1.0],
+        [1.0, 2.0],
+        [1.0, 3.0],
+    ])
+    observations = np.array([2.1, 4.9, 8.2, 10.8])
+
+    solution = solve_qr(matrix, observations)
+    residual = matrix @ solution - observations
+
+    assert_allclose(
+        matrix.T @ residual,
+        np.zeros(matrix.shape[1]),
+        rtol=RTOL,
+        atol=ATOL,
+    )
+
+
+def test_solve_qr_rejects_rank_deficient_matrix() -> None:
+    matrix = np.array([
+        [1.0, 1.0],
+        [2.0, 2.0],
+        [3.0, 3.0],
+    ])
+    observations = np.array([2.0, 4.0, 6.0])
+
+    with pytest.raises(ValueError, match="full column rank"):
+        solve_qr(matrix, observations)
