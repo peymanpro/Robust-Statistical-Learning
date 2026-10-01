@@ -30,28 +30,31 @@ The current public source includes:
 - small real-data reference checks;
 - automated CI.
 
-## Verification Rule
+## Verification
 
-Only describe features as verified when there is:
+GitHub Actions run 36933016363 verified commit d7b6816.
 
-1. implementation evidence;
-2. tests or deterministic verification;
-3. relevant experiment/reference evidence when applicable;
-4. a recorded commit.
+- Ruff: PASS
+- mypy: PASS — 16 source files
+- pytest: PASS — 90 tests
+- representative experiments: PASS
+- real-data reference validation: PASS
 
-A fresh local clone could not be performed in this session because external
-repository access from the local runtime was unavailable. The immediate next
-step is therefore to verify the GitHub Actions workflow and record its result.
+Reference checks reported maximum absolute coefficient difference 1.023e-12
+and maximum absolute explained-variance-ratio difference 6.994e-15.
+
+A fresh local clone was unavailable in this session; GitHub Actions is therefore
+the fresh automated verification source.
 
 ## Architectural Rule
 
 Keep the numerical core independent from experiments, external datasets,
 web/API infrastructure, and deployment concerns.
 
-## Recommended Continuation
+## Current Completion
 
-After CI verification, synchronize Git-Projects-Phase/projects/Robust-Statistical-Learning.md
-with the actual repository state.
+The v0.2.0 completion target is verified. The corresponding control file in
+Git-Projects-Phase should remain synchronized with this state.
 
 Future work should be a single coherent extension, not a collection of unrelated
 algorithms.

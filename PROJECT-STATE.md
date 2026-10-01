@@ -6,8 +6,7 @@ peymanpro/Robust-Statistical-Learning
 
 ## Current Phase
 
-Core MVP + Robust Regression extension; awaiting CI-backed verification of the
-current public source.
+Complete — v0.2.0 core MVP + Robust Regression extension.
 
 ## Current Implementation
 
@@ -83,24 +82,36 @@ current public source.
 | dac36eb | Ridge, Tikhonov, and PCA learning layer |
 | 2774c61 | Huber regression, experiments, and CI workflow |
 
+d7b6816 finalizes v0.2.0 package metadata and public learning API.
+
 Earlier commits contain the validated Normal Equations, QR, SVD, conditioning,
 and controlled stability studies.
 
 ## Verification
 
-A fresh local clone could not be performed in this session because external
-repository access from the local runtime was unavailable.
+GitHub Actions run 36933016363 verified commit d7b6816.
 
-The CI workflow in .github/workflows/ci.yml is intended to be the authoritative
-fresh verification path. After it executes, this document should record the run
-status and any failures before claiming final completion.
+| Check | Result |
+|---|---|
+| Ruff | PASS |
+| mypy | PASS — 16 source files |
+| pytest | PASS — 90 tests |
+| Error diagnostics experiment | PASS |
+| Regularization experiment | PASS |
+| PCA reconstruction experiment | PASS |
+| Real-data reference validation | PASS |
+
+Reference validation reported maximum absolute coefficient difference 1.023e-12
+and maximum absolute explained-variance-ratio difference 6.994e-15.
+
+A fresh local clone was unavailable in this session, so GitHub Actions is the
+fresh automated verification source.
 
 ## Next
 
-1. Verify the CI workflow for the current source.
-2. Reconcile the Git Projects Phase control file with the actual repository.
-3. Keep future extensions focused on numerical reliability, robust statistics,
-   optimization, uncertainty, or statistically grounded decision support.
+The current completion target is closed. Future work should only deepen numerical
+reliability, robust statistics, optimization, uncertainty, or statistically
+grounded decision support.
 
 ## Constraints
 
