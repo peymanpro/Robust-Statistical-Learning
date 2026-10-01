@@ -102,11 +102,11 @@ The MVP consists of four phases (Least Squares, Regularization, PCA, Real Data V
 
 **Elastic Net**
 - Combination of L2 and L1 penalties
-- \(\|Ax - b\|^2 + \lambda_2 \|x\|^2 + \lambda_1 \|x\|_1\)
+- $\|Ax - b\|^2 + \lambda_2 \|x\|^2 + \lambda_1 \|x\|_1$
 - Parameter selection (grid search, cross-validation)
 
 **LASSO (L1 Regularization)**
-- \(\|Ax - b\|^2 + \lambda \|x\|_1\)
+- $\|Ax - b\|^2 + \lambda \|x\|_1$
 - Sparse solutions
 - Computational algorithms (coordinate descent, proximal)
 
