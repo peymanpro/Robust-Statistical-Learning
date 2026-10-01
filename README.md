@@ -33,7 +33,7 @@ for NumPy, SciPy, or scikit-learn.
 Least squares:
 
 ```math
-\hat{x} = \operatorname*{arg\,min}_x \|Ax-b\|_2^2
+\hat{x} = \underset{x}{\mathrm{arg\,min}} \|Ax-b\|_2^2
 ```
 
 Normal equations:
@@ -67,7 +67,7 @@ The central numerical warning is:
 Ridge:
 
 ```math
-\hat{x}_\alpha = \operatorname*{arg\,min}_x
+\hat{x}_\alpha = \underset{x}{\mathrm{arg\,min}}
 \left(\|Ax-b\|_2^2 + \alpha\|x\|_2^2\right)
 ```
 
