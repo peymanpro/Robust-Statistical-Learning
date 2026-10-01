@@ -32,34 +32,53 @@ for NumPy, SciPy, or scikit-learn.
 
 Least squares:
 
-    x_hat = arg min_x ||Ax - b||_2^2
+$
+\hat{x} = \operatorname*{arg\,min}_x \|Ax-b\|_2^2
+$
 
 Normal equations:
 
-    A^T A x = A^T b
+$
+A^T A x = A^T b
+$
 
 QR:
 
-    A = QR
-    Rx = Q^T b
+$
+A = QR
+$
+
+$
+Rx = Q^T b
+$
 
 SVD:
 
-    A = U Sigma V^T
+$
+A = U\Sigma V^T
+$
 
 The central numerical warning is:
 
-    kappa(A^T A) ~= kappa(A)^2
+$
+\kappa(A^T A) \approx \kappa(A)^2
+$
 
 Ridge:
 
-    x_alpha = arg min_x ||Ax - b||_2^2 + alpha ||x||_2^2
+$
+\hat{x}_\alpha = \operatorname*{arg\,min}_x \left(\|Ax-b\|_2^2 + \alpha\|x\|_2^2\right)
+$
 
 Huber loss:
 
-    rho_delta(r) =
-        0.5 r^2                         if |r| <= delta
-        delta (|r| - 0.5 delta)         otherwise
+$
+\rho_\delta(r)=
+\begin{cases}
+0.5r^2, & |r|\leq\delta\\
+\delta(|r|-0.5\delta), & |r|>\delta
+\end{cases}
+$
 
 ## Architecture
 
