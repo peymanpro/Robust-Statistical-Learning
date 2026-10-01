@@ -6,7 +6,7 @@ This document contains the core mathematical formulations underlying the project
 
 The fundamental least-squares problem:
 
-$$\hat{x} = \operatorname*{arg\,min}_x \|Ax - b\|_2^2$$
+$$\hat{x} = \underset{x}{\mathrm{arg\,min}} \|Ax - b\|_2^2$$
 
 where:
 - $A \in \mathbb{R}^{m \times n}$ is the data/design matrix
@@ -254,7 +254,7 @@ A small backward error with a well-conditioned problem implies a small forward e
 
 The regularized least-squares problem:
 
-$$\hat{x}_\lambda = \operatorname*{arg\,min}_x \left(\|Ax - b\|_2^2 + \lambda \|x\|_2^2\right)$$
+$$\hat{x}_\lambda = \underset{x}{\mathrm{arg\,min}} \left(\|Ax - b\|_2^2 + \lambda \|x\|_2^2\right)$$
 
 where $\lambda > 0$ is the regularization parameter.
 
