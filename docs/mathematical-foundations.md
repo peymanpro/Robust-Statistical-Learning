@@ -9,12 +9,12 @@ The fundamental least-squares problem:
 $$\hat{x} = \operatorname*{arg\,min}_x \|Ax - b\|_2^2$$
 
 where:
-- \(A \in \mathbb{R}^{m \times n}\) is the data/design matrix
-- \(b \in \mathbb{R}^m\) is the observation vector
-- \(x \in \mathbb{R}^n\) is the solution vector
-- \(\|\cdot\|_2\) is the Euclidean (L2) norm
+- $A \in \mathbb{R}^{m \times n}$ is the data/design matrix
+- $b \in \mathbb{R}^m$ is the observation vector
+- $x \in \mathbb{R}^n$ is the solution vector
+- $\|\cdot\|_2$ is the Euclidean (L2) norm
 
-**Assumption**: \(m \geq n\) (overdetermined or square system).
+**Assumption**: $m \geq n$ (overdetermined or square system).
 
 ## Vectors and Norms
 
@@ -22,23 +22,23 @@ where:
 
 $$\|v\|_2 = \sqrt{\sum_{i=1}^n v_i^2}$$
 
-for \(v \in \mathbb{R}^n\).
+for $v \in \mathbb{R}^n$.
 
 ### Frobenius Norm (Matrix L2 Norm)
 
 $$\|A\|_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n A_{ij}^2}$$
 
-for \(A \in \mathbb{R}^{m \times n}\).
+for $A \in \mathbb{R}^{m \times n}$.
 
 ### Operator Norm (Spectral Norm)
 
 $$\|A\|_2 = \max_{x \neq 0} \frac{\|Ax\|_2}{\|x\|_2} = \sigma_{\max}(A)$$
 
-where \(\sigma_{\max}(A)\) is the largest singular value of \(A\).
+where $\sigma_{\max}(A)$ is the largest singular value of $A$.
 
 ## Residual
 
-The residual vector at a candidate solution \(x\):
+The residual vector at a candidate solution $x$:
 
 $$r = Ax - b$$
 
@@ -46,7 +46,7 @@ The residual norm:
 
 $$\|r\| = \|Ax - b\|$$
 
-At the least-squares solution \(\hat{x}\):
+At the least-squares solution $\hat{x}$:
 
 $$r = A\hat{x} - b$$
 
@@ -68,44 +68,44 @@ The solution is:
 
 $$\hat{x} = (A^T A)^{-1} A^T b$$
 
-**Condition Number Warning**: \(\kappa(A^T A) \approx \kappa(A)^2\), which can be problematic for ill-conditioned problems.
+**Condition Number Warning**: $\kappa(A^T A) \approx \kappa(A)^2$, which can be problematic for ill-conditioned problems.
 
 ## QR Decomposition
 
-Any matrix \(A \in \mathbb{R}^{m \times n}\) with \(m \geq n\) can be decomposed as:
+Any matrix $A \in \mathbb{R}^{m \times n}$ with $m \geq n$ can be decomposed as:
 
 $$A = QR$$
 
 where:
-- \(Q \in \mathbb{R}^{m \times n}\) has orthonormal columns (\(Q^T Q = I_n\))
-- \(R \in \mathbb{R}^{n \times n}\) is upper triangular
+- $Q \in \mathbb{R}^{m \times n}$ has orthonormal columns ($Q^T Q = I_n$)
+- $R \in \mathbb{R}^{n \times n}$ is upper triangular
 
 The least-squares solution via QR:
 
 $$Rx = Q^T b$$
 
-Solve this triangular system to get \(\hat{x}\).
+Solve this triangular system to get $\hat{x}$.
 
-**Advantage**: Better numerical stability than normal equations. \(\kappa(R) \approx \kappa(A)\).
+**Advantage**: Better numerical stability than normal equations. $\kappa(R) \approx \kappa(A)$.
 
 ## Singular Value Decomposition (SVD)
 
-Any matrix \(A \in \mathbb{R}^{m \times n}\) can be decomposed as:
+Any matrix $A \in \mathbb{R}^{m \times n}$ can be decomposed as:
 
 $$A = U\Sigma V^T$$
 
 where:
-- \(U \in \mathbb{R}^{m \times m}\) is orthogonal (columns are left singular vectors)
-- \(\Sigma \in \mathbb{R}^{m \times n}\) is diagonal with non-negative entries (singular values) in decreasing order
-- \(V \in \mathbb{R}^{n \times n}\) is orthogonal (columns are right singular vectors)
+- $U \in \mathbb{R}^{m \times m}$ is orthogonal (columns are left singular vectors)
+- $\Sigma \in \mathbb{R}^{m \times n}$ is diagonal with non-negative entries (singular values) in decreasing order
+- $V \in \mathbb{R}^{n \times n}$ is orthogonal (columns are right singular vectors)
 
-The singular values: \(\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_n \geq 0\)
+The singular values: $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_n \geq 0$
 
 ### Pseudoinverse via SVD
 
 $$A^+ = V\Sigma^+ U^T$$
 
-where \(\Sigma^+\) is the pseudoinverse of \(\Sigma\) (transpose, reciprocate nonzero diagonal entries).
+where $\Sigma^+$ is the pseudoinverse of $\Sigma$ (transpose, reciprocate nonzero diagonal entries).
 
 The least-squares solution via SVD:
 
@@ -118,32 +118,32 @@ least-squares method.
 
 For
 
-\[
+$
 A = U\Sigma V^T
-\]
+$
 
 the reduced decomposition uses
 
-\[
+$
 U \in \mathbb{R}^{m \times k},\quad
 \Sigma \in \mathbb{R}^{k \times k},\quad
 V^T \in \mathbb{R}^{k \times n},
 \quad k = \min(m,n).
-\]
+$
 
 The decomposition must satisfy the numerical invariants:
 
-\[
+$
 A \approx U\Sigma V^T
-\]
+$
 
-\[
+$
 U^TU \approx I
-\]
+$
 
-\[
+$
 V^TV \approx I
-\]
+$
 
 The singular values must be returned in non-increasing order.
 
@@ -151,21 +151,21 @@ The singular values must be returned in non-increasing order.
 
 The least-squares solution is computed through the pseudoinverse:
 
-\[
+$
 \hat{x}=A^+b=V\Sigma^+U^Tb.
-\]
+$
 
-For a singular value \(\sigma_i\) below the numerical-rank threshold,
+For a singular value $\sigma_i$ below the numerical-rank threshold,
 its reciprocal is treated as zero rather than computed explicitly.
 
 When `rcond=None`, the numerical-rank threshold is defined as
 
-\[
+$
 \tau =
 \sigma_{\max}\max(m,n)\epsilon,
-\]
+$
 
-where \(\epsilon\) is the floating-point machine precision for the working
+where $\epsilon$ is the floating-point machine precision for the working
 dtype.
 
 The SVD solver therefore supports rank-deficient systems and returns the
@@ -208,7 +208,7 @@ numerical properties, invariants, and tests.
 
 $$\kappa(A) = \|A\|\|A^{-1}\|$$
 
-In terms of singular values (for full-rank \(A\)):
+In terms of singular values (for full-rank $A$):
 
 $$\kappa(A) = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}$$
 
@@ -216,9 +216,9 @@ $$\kappa(A) = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}$$
 
 The condition number measures sensitivity of the linear system to perturbations:
 
-- **\(\kappa(A) \approx 1\)**: well-conditioned; small perturbations cause small changes
-- **\(\kappa(A) \gg 1\)**: ill-conditioned; small perturbations can cause large changes
-- **\(\kappa(A) \approx 10^{k}\)**: expect to lose approximately \(k\) digits of precision
+- **$\kappa(A) \approx 1$**: well-conditioned; small perturbations cause small changes
+- **$\kappa(A) \gg 1$**: ill-conditioned; small perturbations can cause large changes
+- **$\kappa(A) \approx 10^{k}$**: expect to lose approximately $k$ digits of precision
 
 ### Normal Equations Condition Number
 
@@ -228,7 +228,7 @@ $$\kappa(A^T A) = \kappa(A)^2$$
 
 ## Forward Error
 
-The forward error (or absolute forward error) at an approximate solution \(\tilde{x}\):
+The forward error (or absolute forward error) at an approximate solution $\tilde{x}$:
 
 $$e = \tilde{x} - \hat{x}$$
 
@@ -242,7 +242,7 @@ $$\frac{\|e\|}{\|\hat{x}\|} = \frac{\|\tilde{x} - \hat{x}\|}{\|\hat{x}\|}$$
 
 Backward error measures how much the problem must be perturbed to make the computed solution exact.
 
-For a computed solution \(\tilde{x}\), the backward error asks: what is the smallest \(\Delta A\) and \(\Delta b\) such that:
+For a computed solution $\tilde{x}$, the backward error asks: what is the smallest $\Delta A$ and $\Delta b$ such that:
 
 $$(A + \Delta A)\tilde{x} = b + \Delta b$$
 
@@ -256,7 +256,7 @@ The regularized least-squares problem:
 
 $$\hat{x}_\lambda = \operatorname*{arg\,min}_x \left(\|Ax - b\|_2^2 + \lambda \|x\|_2^2\right)$$
 
-where \(\lambda > 0\) is the regularization parameter.
+where $\lambda > 0$ is the regularization parameter.
 
 ### Normal Equations Form
 
@@ -266,7 +266,7 @@ $$(A^T A + \lambda I)\hat{x}_\lambda = A^T b$$
 
 $$\hat{x}_\lambda = V\Sigma_\lambda^+ U^T b$$
 
-where \(\Sigma_\lambda^+\) has diagonal entries:
+where $\Sigma_\lambda^+$ has diagonal entries:
 
 $$\frac{\sigma_i}{\sigma_i^2 + \lambda}$$
 
@@ -280,16 +280,16 @@ Regularization improves conditioning by suppressing small singular values.
 
 ### Bias-Variance Tradeoff
 
-- **\(\lambda \to 0\)**: solution approaches unregularized least squares (high variance, low bias)
-- **\(\lambda \to \infty\)**: solution approaches zero (low variance, high bias)
+- **$\lambda \to 0$**: solution approaches unregularized least squares (high variance, low bias)
+- **$\lambda \to \infty$**: solution approaches zero (low variance, high bias)
 
-The optimal \(\lambda\) balances these effects.
+The optimal $\lambda$ balances these effects.
 
 ## Principal Component Analysis (PCA)
 
 ### SVD Formulation
 
-Given a data matrix \(X \in \mathbb{R}^{m \times n}\) (rows are observations, columns are features):
+Given a data matrix $X \in \mathbb{R}^{m \times n}$ (rows are observations, columns are features):
 
 $$X = U\Sigma V^T$$
 
@@ -299,15 +299,15 @@ Typically, center the data first:
 
 $$X_c = X - \frac{1}{m}\mathbf{1}\mathbf{1}^T X$$
 
-where \(\mathbf{1}\) is the vector of ones.
+where $\mathbf{1}$ is the vector of ones.
 
 ### Principal Components
 
-The right singular vectors \(V\) are the principal component directions. The left singular vectors \(U\) (scaled by singular values) give the principal component scores.
+The right singular vectors $V$ are the principal component directions. The left singular vectors $U$ (scaled by singular values) give the principal component scores.
 
 ### Explained Variance
 
-The fraction of variance explained by the first \(k\) components:
+The fraction of variance explained by the first $k$ components:
 
 $$\text{FVE}(k) = \frac{\sum_{i=1}^k \sigma_i^2}{\sum_{i=1}^n \sigma_i^2}$$
 
@@ -315,11 +315,11 @@ This guides dimensionality reduction decisions.
 
 ### Reconstruction from Components
 
-Using the first \(k\) components:
+Using the first $k$ components:
 
 $$\tilde{X} = U_k \Sigma_k V_k^T$$
 
-where \(U_k\), \(\Sigma_k\), \(V_k^T\) use only the first \(k\) singular values and vectors.
+where $U_k$, $\Sigma_k$, $V_k^T$ use only the first $k$ singular values and vectors.
 
 The reconstruction error:
 
@@ -333,7 +333,7 @@ Every algorithm in this project follows a standard traceability pattern:
 2. **Algorithm** — Step-by-step procedure in pseudocode
 3. **Assumptions** — Problem size, conditioning, precision requirements
 4. **Numerical Properties** — Stability, conditioning, error behavior
-5. **Invariants** — Mathematical properties that must hold (e.g., \(Q^T Q \approx I\))
+5. **Invariants** — Mathematical properties that must hold (e.g., $Q^T Q \approx I$)
 6. **Tests** — Concrete checks that verify correctness
 
 Example traceability chain for QR decomposition:
