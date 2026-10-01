@@ -2,95 +2,159 @@
 
 ## Project Overview
 
-A focused numerical and statistical learning project investigating how mathematically valid learning methods behave under finite-precision arithmetic, ill-conditioning, noise, and regularization.
+A numerical and statistical learning project for studying a practical question:
 
-## Why This Project Exists
+> When mathematically valid learning methods run on finite-precision, noisy, or
+> ill-conditioned data, what fails, why does it fail, and what makes the result
+> more reliable?
 
-When a learning method is mathematically correct, it is not automatically numerically reliable. Established libraries (NumPy, SciPy, scikit-learn) solve practical problems at scale. This project investigates the deeper question:
+The project is deliberately small enough to inspect mathematically while using
+engineering practices expected from production-oriented machine-learning work:
+clear contracts, tests, reproducible experiments, reference validation, and CI.
 
-**When a mathematically valid learning method is executed using finite-precision arithmetic, when can the result become unreliable, and how can we make it more robust?**
+This project is for understanding and investigation. It is not a replacement
+for NumPy, SciPy, or scikit-learn.
 
-The goal is to understand, not to replace.
+## What It Demonstrates
+
+- Least-squares solvers using Normal Equations, QR, and SVD
+- Numerical-rank detection and minimum-norm solutions
+- Conditioning, perturbation sensitivity, forward error, backward error, and
+  residual orthogonality
+- Ridge and generalized Tikhonov regularization
+- Data-driven Ridge parameter selection with generalized cross-validation
+- SVD-based PCA, explained variance, transformation, and reconstruction
+- Huber regression through iteratively reweighted least squares (IRLS)
+- Controlled synthetic experiments and small real-data reference checks
+- Automated quality checks with Ruff, mypy, pytest, and reproducible experiments
 
 ## Core Mathematical Foundation
 
-$$\hat{x}=\operatorname*{arg\,min}_x \|Ax-b\|_2^2$$
+Least squares:
 
-The relationship between formulations:
+    x_hat = arg min_x ||Ax - b||_2^2
 
-$$A^TAx=A^Tb \quad \Rightarrow \quad A=QR \quad \Rightarrow \quad A=U\Sigma V^T$$
+Normal equations:
 
-The conditioning barrier:
+    A^T A x = A^T b
 
-$$\kappa(A^TA)\approx\kappa(A)^2$$
+QR:
 
-With regularization:
+    A = QR
+    Rx = Q^T b
 
-$$\hat{x}_{\lambda}=\operatorname*{arg\,min}_x \left(\|Ax-b\|_2^2+\lambda\|x\|_2^2\right)$$
+SVD:
 
-## MVP — Four Phases
+    A = U Sigma V^T
 
-| Phase | Focus | Status |
-| ----- | ----- | ------ |
-| 1 | Least Squares & Numerical Stability | In progress |
-| 2 | Regularization (Ridge/Tikhonov) | Not started |
-| 3 | Principal Component Analysis | Not started |
-| 4 | Real Data & Validation | Not started |
+The central numerical warning is:
 
-## Engineering Principles
+    kappa(A^T A) ~= kappa(A)^2
 
-- **Clean Code**: focused functions, meaningful names, explicit dependencies
-- **Type Hints**: clear contracts and static analysis
-- **Testing**: mathematical invariants, numerical behavior, reference validation, engineering tests
-- **Numerical Responsibility**: condition numbers, perturbations, error analysis, finite-precision effects
-- **Reproducibility**: seeds, dimensions, versions documented
-- **Separation**: core numerical methods from infrastructure and experiments
+Ridge:
+
+    x_alpha = arg min_x ||Ax - b||_2^2 + alpha ||x||_2^2
+
+Huber loss:
+
+    rho_delta(r) =
+        0.5 r^2                         if |r| <= delta
+        delta (|r| - 0.5 delta)         otherwise
 
 ## Architecture
 
-```text
-Infrastructure (REST, FastAPI, Docker, etc.)
-        |
-        v
-Application Services (orchestration, datasets, benchmarks)
-        |
-        v
-Statistical Learning (Least Squares, Ridge, PCA)
-        |
-        v
-Numerical Core (decompositions, solvers, norms, condition numbers)
-```
+    Experiments / validation
+            |
+            v
+    Learning layer
+    Least Squares | Ridge/Tikhonov | PCA | Robust Regression
+            |
+            v
+    Numerical core
+    Validation | norms | conditioning | residuals | error diagnostics
+            |
+            v
+    NumPy
+
+The numerical core remains independent from infrastructure and experiment code.
+
+## Project Status
+
+The original four-phase MVP is implemented:
+
+| Phase | Scope | Status |
+|---|---|---|
+| 1 | Least Squares & Numerical Stability | Implemented |
+| 2 | Regularization | Implemented |
+| 3 | PCA | Implemented |
+| 4 | Real Data & Validation | Implemented |
+
+A focused robustness extension is also implemented:
+
+| Extension | Scope | Status |
+|---|---|---|
+| Robust Regression | Huber loss + IRLS | Implemented |
+
+## Experiments
+
+The repository contains reproducible studies for:
+
+- well-conditioned solver comparison
+- ill-conditioned solver comparison
+- Hilbert matrices
+- Vandermonde matrices
+- perturbations in A and b
+- additive observation noise
+- forward/backward/residual error diagnostics
+- Ridge regularization under ill-conditioning and noise
+- PCA reconstruction
+- real-data reference validation
+
+Each experiment is intended to separate mathematical claims from numerical
+evidence. Results depend on the tested dimensions, data, floating-point
+environment, and reference implementation.
 
 ## Documentation
 
-- [ROADMAP.md](ROADMAP.md) — operational roadmap with task lists
-- [PROJECT-STATE.md](PROJECT-STATE.md) — current implementation state
-- [HANDOFF.md](HANDOFF.md) — continuation guide for new sessions
-- [docs/architecture.md](docs/architecture.md) — deeper architectural design
-- [docs/mathematical-foundations.md](docs/mathematical-foundations.md) — core equations and definitions
-- [docs/numerical-stability.md](docs/numerical-stability.md) — conditioning, stability, error analysis
-- [docs/design-decisions.md](docs/design-decisions.md) — key decisions and rationale
-- [docs/testing-strategy.md](docs/testing-strategy.md) — testing approach across four layers
-- [docs/experiments.md](docs/experiments.md) — experimental methodology and evidence standards
-- [docs/future-scope.md](docs/future-scope.md) — post-MVP possibilities
+- README and project-state documents in the repository root
+- docs/architecture.md
+- docs/mathematical-foundations.md
+- docs/numerical-stability.md
+- docs/error-analysis.md
+- docs/regularization.md
+- docs/pca.md
+- docs/robust-regression.md
+- docs/real-data-validation.md
+- docs/testing-strategy.md
+- docs/experiments.md
+- docs/future-scope.md
 
-## Current Status
+## Engineering Standards
 
-Active numerical investigation. See [PROJECT-STATE.md](PROJECT-STATE.md) for detailed state.
+The repository uses:
 
-## Long-Term Vision
+- Python 3.12+
+- NumPy 2+
+- pytest
+- Ruff
+- mypy in strict mode
+- optional SciPy/scikit-learn reference dependencies
 
-Possible future directions (post-MVP):
-- broader matrix decompositions and iterative solvers
-- optimization algorithms (gradient descent, Newton, quasi-Newton, coordinate descent)
-- neural-network numerical foundations
-- REST API and deployment infrastructure
-- GPU execution
+CI verifies code quality, the automated test suite, and representative
+experiments.
 
-These are exploratory possibilities, not current commitments. See [docs/future-scope.md](docs/future-scope.md).
+## Scope Boundary
+
+This repository intentionally does not attempt to become:
+
+- a general-purpose scientific-computing replacement;
+- a high-performance GPU library;
+- a production model-serving platform;
+- an arbitrary collection of machine-learning algorithms.
+
+Future additions should deepen the relationship between mathematics,
+statistical behavior, numerical reliability, or learning-system design.
 
 ## Repository
 
-- **URL**: https://github.com/peymanpro/Robust-Statistical-Learning
-- **Branch**: main
-- **Status**: Documentation created. Implementation to follow.
+https://github.com/peymanpro/Robust-Statistical-Learning

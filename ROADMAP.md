@@ -4,202 +4,123 @@ Legend:
 
 - [ ] Not started
 - [~] In progress
-- [x] Completed
+- [x] Completed and verified
 - [!] Blocked
+- [-] Intentionally out of scope
 
-## Phase 0 ? Foundation
+## Phase 0 — Foundation
 
-- [x] Repository created
-- [x] Python package structure created
-- [x] Test structure created
-- [x] `pyproject.toml` configured
-- [x] `.gitignore` configured
-- [x] pytest available
-- [x] Ruff configured
-- [x] mypy configured
-- [x] Documentation system created
-- [x] MVP boundary defined
-- [x] Architecture defined
-- [x] Foundation test implemented
-- [x] Foundation validation passed
-- [x] Foundation committed
+- [x] Repository structure
+- [x] Python package configuration
+- [x] Test structure
+- [x] Ruff configuration
+- [x] mypy configuration
+- [x] Documentation system
+- [x] Foundation tests
 
----
+## Phase 1 — Least Squares & Numerical Stability
 
-# Phase 1 ? Least Squares & Numerical Stability
+### Mathematical and Numerical Core
 
-## 1.1 Mathematical Foundation
+- [x] Least-squares formulation and residuals
+- [x] Matrix/vector validation
+- [x] L2 and Frobenius norms
+- [x] Condition-number calculation
+- [x] Normal Equations solver
+- [x] QR-based solver
+- [x] SVD-based solver
+- [x] Numerical-rank and minimum-norm behavior
 
-- [x] Define the least-squares optimization problem
-- [x] Define residual and residual norm
-- [x] Define required vector and matrix conventions
-- [x] Define numerical tolerances
-- [x] Add mathematical invariant tests
+### Stability Analysis
 
-## 1.2 Numerical Core
+- [x] Well-conditioned comparison
+- [x] Ill-conditioned comparison
+- [x] Hilbert-matrix study
+- [x] Vandermonde study
+- [x] Perturbation sensitivity
+- [x] Observation-noise sensitivity
+- [x] Forward-error diagnostics
+- [x] Backward-error indicator
+- [x] Residual orthogonality diagnostics
+- [x] Consolidated error-analysis experiment
+- [x] Phase findings documented
 
-- [x] Establish core package boundaries
-- [x] Add required numerical utility functions
-- [x] Add input validation
-- [x] Add norm calculations
-- [x] Add condition-number calculation
-- [x] Add residual calculation
+## Phase 2 — Regularization
 
-## 1.3 Normal Equations
+### Mathematical and Numerical Core
 
-- [x] Implement Normal Equations solver
-- [x] Test exact and recoverable systems
-- [x] Test overdetermined systems
-- [x] Test failure conditions
-- [x] Document conditioning implications
+- [x] Ridge formulation
+- [x] Stable SVD-based Ridge solver
+- [x] Generalized Tikhonov solver
+- [x] SVD shrinkage interpretation
+- [x] Generalized cross-validation score
+- [x] GCV candidate selection
 
-## 1.4 QR-based Least Squares
+### Experiments
 
-- [x] Define QR requirements
-- [x] Implement or wrap the selected QR strategy
-- [x] Test reconstruction and invariants
-- [x] Implement QR-based least squares
-- [x] Compare against reference behavior
+- [x] Controlled ill-conditioned noisy comparison
+- [x] Regularization-path evidence
+- [x] Reference-oriented interpretation
+- [x] Statistical-vs-numerical trade-off documented
 
-## 1.5 SVD-based Least Squares
+## Phase 3 — Principal Component Analysis
 
-- [x] Define SVD requirements and solver contract
-- [x] Implement or wrap the selected SVD strategy
-- [x] Test reconstruction and invariants
-- [x] Implement SVD-based least squares
-- [x] Test rank-deficient and numerical-rank behavior
-- [x] Compare against reference behavior
+### Learning Core
 
-## 1.6 Numerical Stability Analysis
+- [x] Centering
+- [x] SVD-based PCA
+- [x] Component extraction
+- [x] Explained variance
+- [x] Explained-variance ratio
+- [x] Transform
+- [x] Inverse transform
+- [x] Reconstruction error
 
-- [x] Well-conditioned cases
-- [x] Ill-conditioned cases
-- [x] Hilbert-matrix experiment
-- [x] Vandermonde-matrix experiment
-- [x] Perturbation experiments
-- [ ] Noise experiments
-- [ ] Residual vs forward-error analysis
-- [ ] Backward-error analysis
-- [ ] Normal Equations vs QR vs SVD comparison
+### Experiments
 
-## 1.7 Phase 1 Findings
+- [x] Structured low-dimensional synthetic dataset
+- [x] Reconstruction by component count
+- [x] Numerical/invariant tests
+- [x] PCA documentation
 
-- [ ] Evidence summary
-- [ ] Failure-case summary
-- [ ] Practical solver-selection guidance
-- [ ] Phase 1 documentation update
+## Phase 4 — Real Data & Validation
 
----
+- [x] Select regression dataset
+- [x] Select PCA dataset
+- [x] Reproducible reference validation
+- [x] Compare least-squares coefficients
+- [x] Compare PCA explained-variance ratios
+- [x] Add validation to CI
+- [x] Document limitations of reference comparisons
 
-# Phase 2 ? Regularization
+## Extension — Robust Regression
 
-## 2.1 Mathematical Foundations
+- [x] Huber loss
+- [x] IRLS weighting
+- [x] SVD-backed weighted least squares
+- [x] Convergence contract
+- [x] Outlier-sensitivity test
+- [x] Controlled robustness documentation
 
-- [ ] Ridge formulation
-- [ ] Tikhonov formulation
-- [ ] Conditioning effect
-- [ ] Bias/stability trade-off
-- [ ] Parameter-selection concepts
+## Engineering Completion
 
-## 2.2 Numerical Core
+- [x] Error-diagnostic API
+- [x] Representative reproducible experiments
+- [x] Automated CI workflow
+- [x] Public-facing README synchronized with implementation
 
-- [ ] Ridge solver
-- [ ] Tikhonov solver
-- [ ] SVD interpretation
-- [ ] Parameter-selection implementation
+## Explicitly Not Active
 
-## 2.3 Experiments
+The following remain future scope unless explicitly promoted:
 
-- [ ] Noise sensitivity
-- [ ] Regularization path
-- [ ] Ill-conditioned improvement
-- [ ] Reference comparison
-- [ ] Practical recommendations
+- sparse numerical methods
+- iterative Krylov solvers
+- LASSO / Elastic Net
+- Bayesian uncertainty quantification
+- streaming/incremental PCA
+- GPU/CUDA implementation
+- distributed execution
+- REST serving layer
+- NumPy/SciPy compatibility reimplementation
 
----
-
-# Phase 3 ? Principal Component Analysis
-
-## 3.1 Mathematical Foundations
-
-- [ ] Centering
-- [ ] PCA formulation
-- [ ] SVD interpretation
-- [ ] Explained variance
-- [ ] Reconstruction error
-
-## 3.2 Numerical Core
-
-- [ ] Centering operation
-- [ ] SVD-based PCA
-- [ ] Component extraction
-- [ ] Explained variance
-- [ ] Reconstruction
-
-## 3.3 Experiments
-
-- [ ] Synthetic structured data
-- [ ] Reconstruction experiments
-- [ ] Noise sensitivity
-- [ ] Reference comparison
-- [ ] Real small dataset
-
----
-
-# Phase 4 ? Real Data & Validation
-
-- [ ] Select a small regression dataset
-- [ ] Select a small PCA dataset
-- [ ] Define reproducible preprocessing
-- [ ] Run regression experiments
-- [ ] Run regularization experiments
-- [ ] Run PCA experiments
-- [ ] Compare accuracy
-- [ ] Compare numerical stability
-- [ ] Compare runtime
-- [ ] Analyze failure cases
-- [ ] Publish practical recommendations
-
----
-
-# Post-MVP ? Future Scope
-
-## Numerical Extensions
-
-- [ ] Additional matrix decompositions
-- [ ] Iterative linear solvers
-- [ ] Eigenvalue methods
-- [ ] Sparse numerical methods
-
-## Optimization
-
-- [ ] Gradient Descent
-- [ ] Newton
-- [ ] Quasi-Newton
-- [ ] Coordinate Descent
-- [ ] Convex Optimization
-- [ ] Constrained Optimization
-
-## Deep Learning
-
-- [ ] Neural-network numerical foundations
-- [ ] Backpropagation
-- [ ] Automatic differentiation foundations
-- [ ] Neural-network optimization
-- [ ] GPU execution
-
-## Platform
-
-- [ ] REST API
-- [ ] FastAPI and/or Django
-- [ ] Docker
-- [ ] Distributed computation
-- [ ] Microservices
-
-## Compatibility / Reimplementation
-
-- [ ] Selected NumPy-compatible functionality
-- [ ] Selected SciPy-compatible functionality
-- [ ] Reference performance comparison
-
-Post-MVP items are not active commitments until explicitly promoted.
+These are not required for the project's current portfolio role.
