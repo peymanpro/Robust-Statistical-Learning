@@ -57,10 +57,10 @@ Provide mathematically sound, numerically careful implementations of linear alge
 ### Responsibilities
 - Vector and matrix types (or type aliases to `numpy.ndarray`)
 - Norms: L2 norm, Frobenius norm, operator norms
-- Condition number calculations: \(\kappa(A)\), \(\kappa(A^T A)\)
+- Condition number calculations: $\kappa(A)$, $\kappa(A^T A)$
 - Decompositions: QR, SVD
 - Linear solvers: normal equations, QR-based, SVD-based
-- Residual calculations: \(r = A\hat{x} - b\)
+- Residual calculations: $r = A\hat{x} - b$
 - Forward and backward error measurements
 - Numerical stability checks and diagnostics
 
@@ -170,7 +170,7 @@ src/robust_statistical_learning/
 Validate implementations, gather evidence, guide recommendations.
 
 ### Methodology
-- **Mathematical Invariants**: verify algorithm properties (e.g., \(Q^T Q \approx I\))
+- **Mathematical Invariants**: verify algorithm properties (e.g., $Q^T Q \approx I$)
 - **Numerical Behavior**: test perturbations, ill-conditioning, floating-point effects
 - **Reference Validation**: compare to NumPy, SciPy, scikit-learn
 - **Engineering Tests**: input validation, deterministic behavior, public API
