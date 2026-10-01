@@ -67,7 +67,7 @@ def test_svd_orthogonality(A):
 
 #### Least Squares: Residual Orthogonality
 
-For the least-squares solution, the residual \(r = Ax - b\) should be orthogonal to the column space of \(A\):
+For the least-squares solution, the residual $r = Ax - b$ should be orthogonal to the column space of $A$:
 
 $$A^T r \approx 0$$
 
@@ -95,7 +95,7 @@ def test_normal_equations_consistency(A, b):
 ### Tolerance in Invariant Tests
 
 Tolerances depend on:
-- **Machine precision**: \(\epsilon \approx 10^{-16}\) for float64
+- **Machine precision**: $\epsilon \approx 10^{-16}$ for float64
 - **Problem scale**: larger matrices accumulate more rounding error
 - **Condition number**: ill-conditioned problems have larger numerical errors
 - **Algorithm complexity**: more operations → more rounding
@@ -104,7 +104,7 @@ A rough guideline:
 
 $$\text{tolerance} \approx \max(\epsilon \cdot \|A\| \cdot n^{1.5}, 10^{-10})$$
 
-where \(n\) is problem dimension and \(\|A\|\) is the matrix norm.
+where $n$ is problem dimension and $\|A\|$ is the matrix norm.
 
 **DO NOT use a universal tolerance.** Justify each tolerance.
 
