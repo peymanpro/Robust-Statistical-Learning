@@ -21,12 +21,12 @@ class PCAResult:
     @property
     def n_components(self) -> int:
         """Return the retained component count."""
-        return self.components.shape[0]
+        return int(self.components.shape[0])
 
     @property
     def n_features(self) -> int:
         """Return the original feature count."""
-        return self.components.shape[1]
+        return int(self.components.shape[1])
 
     def transform(self, matrix: FloatArray) -> FloatArray:
         """Project observations into component space."""

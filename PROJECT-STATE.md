@@ -2,163 +2,111 @@
 
 ## Repository
 
-`peymanpro/Robust-Statistical-Learning`
+peymanpro/Robust-Statistical-Learning
 
 ## Current Phase
 
-**Phase 1 — Least Squares & Numerical Stability**
-
-## Current Task
-
-Phase 1.6 — Numerical Stability Analysis.
-
-Phase 1.5 (SVD-based Least Squares) is complete and validated.
-
-## Verified Commit
-
-`994aeaf` — `experiment: add perturbation sensitivity study`
-
-## Completed
-
-Phase 0 — Foundation.
-
-Phase 1.1 — Least-squares mathematical foundation:
-- Least-squares optimization formulation
-- Residual and residual norm
-- Matrix/vector conventions
-- Numerical tolerances
-- Mathematical invariant tests
-
-Phase 1.2 — Numerical Core:
-- Core package boundaries
-- Numerical validation
-- L2 and Frobenius norms
-- 2-norm condition number with numerical-rank handling
-- Residual calculation
-- Least-squares dimension validation
-
-Phase 1.3 — Normal Equations:
-- Normal Equations solver
-- Exact and recoverable systems
-- Overdetermined systems
-- Failure conditions
-- Conditioning experiment
-- Normal Equations conditioning documentation
-
-Phase 1.4 — QR-based Least Squares:
-- QR requirements defined
-- Reduced QR strategy selected
-- QR least-squares solver implemented
-- Reconstruction and orthogonality invariants tested
-- Residual orthogonality tested
-- Full-column-rank failure contract tested
-- Comparison with Normal Equations
-- Comparison with `numpy.linalg.lstsq`
-- Ill-conditioning comparison documented
-
-Phase 1.5 — SVD-based Least Squares:
-- SVD requirements and solver contract defined
-- Reduced SVD strategy selected
-- `compute_svd` implemented with `full_matrices=False`
-- `solve_svd` implemented using the SVD pseudoinverse
-- Rank-deficient systems supported via numerical-rank truncation
-- Reconstruction, orthogonality, and ordering invariants tested
-- Residual orthogonality tested
-- Minimum-norm behavior tested
-- Comparison with `numpy.linalg.lstsq`
-- Numerical-rank stability experiment recorded in `docs/experiments.md`
-
-Phase 1.6 - Numerical Stability Analysis (partial):
-- Well-conditioned solver comparison experiment added
-- Evidence recorded in `docs/experiments.md`
-- Findings: NE forward error grows as eps * kappa^2; QR and SVD
-  forward error grows as eps * kappa; small residual does not
-  imply accurate solution (kappa = 1e8 case)
-- Ill-conditioned solver comparison experiment added
-- Findings: NE forward error exceeds 1 at kappa = 1e10 and above;
-  QR tracks eps * kappa up to kappa = 1e14; at kappa = 1e16 the
-  numerical rank drops and both NE and QR raise ValueError, while
-  SVD returns the minimum-norm solution; residual remains small
-  across all solvers even when forward error exceeds 1
-- Hilbert matrix experiment added
-- Findings: NE breaks at n = 6 (kappa = 1.5e7); QR and SVD track
-  eps * kappa until n = 10; at n = 12 numerical rank drops and
-  NE and QR raise ValueError while SVD returns minimum-norm; LU
-  reference at n = 12 is itself unusable (forward error 3.2e-1)
-- Vandermonde matrix experiment added
-- Findings: with uniform nodes, NE usable up to kappa ~ 1e6, fails
-  at n = 12 and rejects the problem at n = 15; QR and SVD remain
-  equivalent and track eps * kappa across the full range; no rank
-  deficiency observed; numerical rank grows more slowly than on
-  the Hilbert family
-- Perturbation sensitivity experiment added
-- Findings: for kappa = 1e4, all three solvers follow the
-  classical perturbation bound at magnitudes >= 1e-10; below that,
-  rounding dominates; QR/SVD floors match eps * kappa while NE
-  floors match eps * kappa^2; perturbing A produces larger forward
-  error than perturbing b of the same relative magnitude
+Core MVP + Robust Regression extension; awaiting CI-backed verification of the
+current public source.
 
 ## Current Implementation
 
-The Numerical Core provides:
-- Matrix and vector conventions
-- Numerical tolerances
-- Input validation
-- Norm calculations
-- Condition-number calculation
-- Residual calculations
+### Numerical Core
 
-The learning layer provides:
-- Least-squares mathematical model
-- Normal Equations solver
-- QR-based least-squares solver
-- SVD-based least-squares solver
+- finite-value and shape validation
+- L2 and Frobenius norms
+- 2-norm condition number with numerical-rank handling
+- residual calculation
+- forward-error measurement
+- normwise backward-error indicator
+- residual-orthogonality diagnostic
 
-The SVD solver uses reduced SVD:
+### Least Squares
 
-    A = U @ diag(s) @ V.T
-    x = V @ diag(1/s) @ U.T @ b
+- Normal Equations
+- reduced QR
+- reduced SVD
+- rank-deficient minimum-norm behavior for SVD
+- numerical-rank truncation
+- reference comparison against NumPy
 
-Singular values below the numerical-rank threshold are truncated. Rank-deficient systems return the minimum-norm solution.
+### Regularization
 
-The QR solver uses reduced QR factorization:
+- SVD-based Ridge regression
+- generalized Tikhonov via an augmented SVD system
+- generalized cross-validation (GCV)
+- candidate-grid alpha selection
 
-    A = QR
-    Rx = Q.T @ b
+### PCA
 
-The QR solver requires full column rank and raises an explicit `ValueError` for rank-deficient systems.
+- centered-data SVD
+- immutable PCAResult
+- transform / inverse_transform
+- explained variance
+- explained-variance ratio
+- reconstruction error
 
-## Validation
+### Robust Regression
 
-| Check | Status |
+- Huber loss
+- IRLS weighting
+- SVD-backed weighted least squares
+- explicit convergence configuration and result object
+
+### Experiments
+
+- well-conditioned comparison
+- ill-conditioned comparison
+- Hilbert matrix
+- Vandermonde matrix
+- perturbation sensitivity
+- noise sensitivity
+- forward/backward/residual diagnostics
+- regularization comparison
+- PCA reconstruction
+- real-data validation
+
+### Quality / CI
+
+- Python 3.12
+- Ruff
+- strict mypy
+- pytest
+- representative experiment execution
+- SciPy / scikit-learn reference validation
+
+## Development Commits
+
+| Commit | Purpose |
 |---|---|
-| pytest | PASS (55 tests) |
-| Ruff | PASS |
-| mypy | PASS (19 source files) |
-| git diff --check | PASS |
+| 24cdfe7 | least-squares forward/backward/residual error diagnostics |
+| dac36eb | Ridge, Tikhonov, and PCA learning layer |
+| 2774c61 | Huber regression, experiments, and CI workflow |
+
+Earlier commits contain the validated Normal Equations, QR, SVD, conditioning,
+and controlled stability studies.
+
+## Verification
+
+A fresh local clone could not be performed in this session because external
+repository access from the local runtime was unavailable.
+
+The CI workflow in .github/workflows/ci.yml is intended to be the authoritative
+fresh verification path. After it executes, this document should record the run
+status and any failures before claiming final completion.
 
 ## Next
 
-Begin Phase 1.6 — Numerical Stability Analysis.
-
-1. Well-conditioned controlled cases.
-2. Ill-conditioned controlled cases.
-3. Hilbert-matrix experiment.
-4. Vandermonde-matrix experiment.
-5. Perturbation experiments.
-6. Noise experiments.
-7. Residual vs forward-error analysis.
-8. Backward-error analysis.
-9. Normal Equations vs QR vs SVD comparison.
+1. Verify the CI workflow for the current source.
+2. Reconcile the Git Projects Phase control file with the actual repository.
+3. Keep future extensions focused on numerical reliability, robust statistics,
+   optimization, uncertainty, or statistically grounded decision support.
 
 ## Constraints
 
 - Never hide failures.
 - Never guess past failures.
-- Never continue past unresolved failures.
-- Inspect status and diff before commits.
+- Numerical claims require reproducible evidence.
+- Keep the numerical core independent from infrastructure.
 - Keep commits atomic and meaningful.
-- Keep numerical core independent from infrastructure.
-- Use SOLID and design patterns only when they solve real problems.
-- Mathematical claims require tests and reproducible evidence.
-- Documentation must reflect the actual repository state.
+- Update documentation when implementation state changes.
