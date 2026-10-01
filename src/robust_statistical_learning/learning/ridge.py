@@ -65,10 +65,10 @@ def ridge_gcv_score(
     validate_least_squares_system(matrix, observations)
     _validate_alpha(alpha)
 
-    u, singular_values, _ = compute_svd(matrix)
+    u, singular_values, vt = compute_svd(matrix)
     projected = u.T @ observations
     factors = singular_values / (singular_values**2 + alpha)
-    solution = compute_svd(matrix)[2].T @ (factors * projected)
+    solution = vt.T @ (factors * projected)
 
     residual = matrix @ solution - observations
     effective_dof = float(

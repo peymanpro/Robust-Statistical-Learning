@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install project
+        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev,reference]"
+
+      - name: Ruff
+        run: ruff check .
+
+      - name: Mypy
+        run: mypy src
+
+      - name: Pytest
+        run: pytest -q
+
+      - name: Error diagnostics experiment
+        run: python experiments/error_analysis.py
+
+      - name: Regularization experiment
+        run: python experiments/regularization_comparison.py
+
+      - name: PCA experiment
+        run: python experiments/pca_reconstruction.py
+
+      - name: Real-data reference validation
+        run: python experiments/real_data_validation.py
