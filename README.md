@@ -67,7 +67,8 @@ $
 Ridge:
 
 $
-\hat{x}_\alpha = \operatorname*{arg\,min}_x \left(\|Ax-b\|_2^2 + \alpha\|x\|_2^2\right)
+\hat{x}_\alpha = \operatorname*{arg\,min}_x
+\left(\|Ax-b\|_2^2 + \alpha\|x\|_2^2\right)
 $
 
 Huber loss:
@@ -75,7 +76,7 @@ Huber loss:
 $
 \rho_\delta(r)=
 \begin{cases}
-0.5r^2, & |r|\leq\delta\\
+0.5r^2, & |r|\leq\delta \\
 \delta(|r|-0.5\delta), & |r|>\delta
 \end{cases}
 $
