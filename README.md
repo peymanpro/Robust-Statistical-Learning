@@ -178,3 +178,11 @@ statistical behavior, numerical reliability, or learning-system design.
 ## Repository
 
 https://github.com/peymanpro/Robust-Statistical-Learning
+
+## Related mathematical implementations
+
+- [Convex Quadratic Programming Solver](https://github.com/peymanpro/Convex-Quadratic-Programming-Solver) explores constrained numerical optimization with a primal-dual interior-point method and numerical validation.
+- [Event-Driven Metaheuristic Optimization](https://github.com/peymanpro/Event-Driven-Metaheuristic-Optimization) investigates adaptation when an optimization problem changes during execution.
+
+These are separate projects. Together, they show complementary work across numerical stability, optimization algorithms, and reproducible experiments.
+
